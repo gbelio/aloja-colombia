@@ -1,0 +1,63 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/alojar', function () {
+    return view('alojar');
+});
+
+Auth::routes();
+
+#Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/alojamientos/busqueda', 'AlojamientosController@busqueda');
+
+Route::group( ['middleware' => ['auth'] ], function()
+{
+	Route::get('/config-cache', function() {
+	   $exitCode = Artisan::call('config:cache');
+	   return '<h1>Cache Config cleared</h1>';
+	});
+
+	Route::get('/app-cache', function() {
+	   $exitCode = Artisan::call('cache:clear');
+	   return '<h1>Cache App cleared</h1>';
+	});
+
+	Route::get('/view-cache', function() {
+	   $exitCode = Artisan::call('view:clear');
+	   return '<h1>View App cleared</h1>';
+	});
+
+	Route::resource('/alojamientos', 'AlojamientosController');
+	Route::resource('/alojamientosPedidos', 'AlojamientosPedidosController');
+	Route::get('/alojamientos/{id}/activar', 'AlojamientosController@activar');
+	Route::get('/alojamientos/{id}/inactivar', 'AlojamientosController@inactivar');
+	Route::post('/alojamientos/{id}/reservar', 'AlojamientosController@reservar');
+
+	Route::get('/home', function () {
+	  return redirect('alojamientos');
+	});
+
+	Route::resource('/users', 'UsersController');
+	Route::get('/changePassword','UsersController@showChangePasswordForm');
+    Route::post('/changePassword','UsersController@changePassword')->name('changePassword');
+
+});
+
+Route::resource('/alojamientos', 'AlojamientosController', ['only' => ['show']]);

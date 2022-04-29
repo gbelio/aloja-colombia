@@ -1,0 +1,125 @@
+@extends('layouts.app')
+ @section('content')
+ 
+ <div class="container-fluid formulario formulario_index">
+  <div class="form-row" style="margin: 0">
+    
+    <div class="imagenPanelPC col-xl-7">
+      <video autoplay="autoplay" muted="muted" loop="loop" id="myVideo">
+        <source src="{{ url('/img/pasos.mp4') }}"> 
+      </video>>
+    </div>
+    
+    <div class="seccionFormulario col-md-5">
+      
+      @if(Session::has('notice'))
+         <div class="alert alert-success">
+            {{ Session::get('notice') }}
+         </div>
+      @endif
+      @if(Session::has('error'))
+         <div class="alert alert-danger">
+            {{ Session::get('error') }}
+         </div>
+      @endif
+
+      <br/>
+
+      @if ( app('request')->input('op') == 1)
+      <h1 class="rojo h1_principal"> Listado de reservas </h1>
+      @else
+      <h1 class="rojo h1_principal"> Mis viajes </h1>
+      @endif
+
+      <br/>
+
+      <div class="form-row">
+        <div class="col-md-12">
+          {!! Form::open(array('url' => 'alojamientosPedidos', 'class' => 'navbar-form navbar-left', 'method' => 'GET')) !!}
+
+          {!! Form::hidden('op', app('request')->input('op')) !!}
+
+             <div class="form-group">
+              <div class="form-row">
+                <div class="col-md-12">          
+                  <select name="busqueda" id="busqueda" class="form-control"> 
+                    @if( app('request')->input('busqueda') == null )
+                         <option selected="selected" value="">Todas</option>
+                         <option value="SO">Solicitadas</option>
+                         <option value="CO">Confirmadas</option>
+                    @else
+                      @if( app('request')->input('busqueda') == 'SO' )
+                         <option value="">Todas</option>
+                         <option selected="selected" value="SO">Solicitadas</option>
+                         <option value="CO">Confirmadas</option>
+                      @else
+                         <option value="">Todas</option>
+                         <option value="SO">Solicitadas</option>
+                         <option selected="selected" value="CO">Confirmadas</option>
+                      @endif
+                    @endif
+                  </select>  
+                  {{ Form::button('<i class="fa fa-search" aria-hidden="true"></i>', ['class' => 'btn boton_accion', 'style' => 'float: right; position: relative; top: -35px; right: 5px;', 'type' => 'submit']) }}
+               </div>
+              </div>
+             </div>
+          {!! Form::close() !!}
+        </div>
+      </div>
+
+      @foreach ($alojamientosPedidos as $alojamientoPedido)
+
+        <?php
+          $estiloFoto = "margin-top: -35px;";
+          $alojamientoFoto = \App\AlojamientoFoto::where('alojamiento_id', $alojamientoPedido->alojamiento_id)->where('num_foto', 1)->first();
+        ?>
+
+        @if ( $alojamientoPedido->estado == 'SO' )
+        <div class="indice_fecha">Solicitud: {{$alojamientoPedido->created_at}} hs</div>
+        @endif
+        <div class="indice_recuadro">Código de reserva: {{$alojamientoPedido->id}}</div>
+        <h1 class="indice_h1">Código: {{$alojamientoPedido->alojamiento_id}}</h1>
+        <h2 class="indice_h2">{{$alojamientoPedido->Alojamiento->titulo}}</h2>
+        @if ( !is_null($alojamientoFoto) )
+          <?php
+            $estiloFoto = "margin-top: -80px;";
+          ?>
+          <div><img src="{{ URL::to('/uploads/' . $alojamientoFoto->archivo) }}" style="width: 100%"/></div>
+        @endif
+
+        <br/>
+
+        <div style="{{$estiloFoto}} position: relative; z-index: 1000; padding: 15px; ">
+          @if ( $alojamientoPedido->estado == 'SO' )
+            @if ( $alojamientoPedido->Alojamiento->propietario_id == \Auth::user()->id || Auth::user()->esAdministrador() ) 
+              {!! link_to('alojamientosPedidos/'.$alojamientoPedido->id . '/edit?op=' . app('request')->input('op'), 'Confirmar / Rechazar', ['style' => 'float: left', 'class' => ' btn boton_accion']) !!}
+            @else
+              {!! link_to('alojamientosPedidos/'.$alojamientoPedido->id . '/edit?op=' . app('request')->input('op'), 'Ver reserva', ['style' => 'float: left', 'class' => ' btn boton_accion']) !!}
+            @endif
+            <div class="btn boton_accion boton_eliminar" style="float: right;">Pendiente</div>
+          @else
+            @if ( $alojamientoPedido->estado == 'CO' )
+              <div class="btn boton_accion boton_alternativo" style="float: right;">Pago pendiente</div>
+            @endif
+            @if ( $alojamientoPedido->estado == 'RE' )
+              <div class="btn boton_accion boton_eliminar" style="float: right;">Rechazada</div>
+            @endif
+            {!! link_to('alojamientosPedidos/'.$alojamientoPedido->id . '/edit?op=' . app('request')->input('op'), 'Ver reserva', ['style' => 'float: left', 'class' => ' btn boton_accion']) !!}
+          @endif
+        </div>
+
+        <hr class="negro_fondo" /><br/>
+
+        <br/>
+
+      @endforeach
+
+      {!! $alojamientosPedidos->appends(Request::only(['busqueda','op']))->render() !!}
+
+    </div>
+  
+  </div>
+ 
+ </div>
+
+ @endsection
