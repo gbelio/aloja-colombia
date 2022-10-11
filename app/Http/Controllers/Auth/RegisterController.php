@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Mail;
-
+use App\Http\Controllers\MailerController;
 class RegisterController extends Controller
 {
     /*
@@ -25,29 +25,23 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
     use RegistersUsers;
-
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
-
     # register agregado por Juan Pablo para que luego de registrarse vaya al lugar en donde estaba haciendo la reserva
     # https://laraveldaily.com/auth-after-registration-redirect-to-previous-intended-page/
 
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-
         event(new Registered($user = $this->create($request->all())));
-
         $this->guard()->login($user);
-
         return $this->registered($request, $user)
-            ?: redirect()->intended($this->redirectPath());
+            ?: redirect('/')/* ->intended($this->redirectPath()) */;
     }
 
     /**
@@ -105,28 +99,8 @@ class RegisterController extends Controller
             'ip_registro' => request()->ip(),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ]);        
-
-// Mail al inquilino
-        $asunto = 'Bienvenido a Aloja Colombia ' . $user->nombreCompleto() . '!';
-        $titulo = 'Bienvenido a Aloja Colombia';
-        $cuerpo = 'Hola ' . $user->nombreCompleto() . ',
-
-¡Te damos la bienvenida a Aloja Colombia!
-
-Porque siempre tendrás seguridad a donde vayas, descubre alojamientos y experiencias únicas en toda Colombia.
-
-Aloja Colombia es una comunidad en la que todos pueden pertenecer, por eso debes tratar a todos sus miembros con respeto e igualdad, sin importar raza, religión, nacionalidad, etnia, color de piel, orientación sexual, identidad de género, edad o discapacidad.
-
-Gracias por ser parte de nuestra comunidad!
-
-Saludos,
-
-Equipo Aloja Colombia,';
-
-        $message = Mail::to($user->email);
-        $message->send(new \App\Mail\MailGenerico( $asunto, $titulo, $cuerpo));
-
+        ]);
+        MailerController::userMailWelcome($user);
         return $user;
     }
 }

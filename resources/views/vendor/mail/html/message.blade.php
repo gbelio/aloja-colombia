@@ -21,7 +21,7 @@
 {{-- Footer --}}
 @slot('footer')
 @component('mail::footer')
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')<br/>
+©{{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')<br/>
 {!! link_to('/doc/terminos.pdf', 'Términos y Condiciones', ['target' => '_blank']) !!}<br/>
 {!! link_to('/doc/privacidad.pdf', 'Política de Privacidad', ['target' => '_blank']) !!}
 @endcomponent

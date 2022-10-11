@@ -315,15 +315,16 @@ img {
     font-weight: bold;
 }
 
-.mail_liquidacion p {
+/* .mail_liquidacion_fechadesde, .mail_liquidacion_fechahasta {
+    width: 50% !important;
+} */
+.mail_liquidacion_fechadesde {
+    text-align: left;
 }
-
-.mail_liquidacion_fechadesde, .mail_liquidacion_fechahasta {
-    width: 50%;
-}
-
 .mail_liquidacion_fechahasta {
-    text-align: right;
+    text-align: right !important;
+    display: block !important;
+    margin-left: 205px !important;
 }
 
 .button-primary {

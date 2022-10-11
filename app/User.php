@@ -39,6 +39,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function alojamientos(){
+        $this->hasMany('App\Alojamiento');
+    }
+    
     public function esAdministrador()
     {
         return $this->admin ? true : false;
@@ -47,6 +51,11 @@ class User extends Authenticatable
     public function nombreCompleto()
     {
         return $this->name . ' ' . $this->apellido;
+    }
+
+    public function name()
+    {
+        return $this->name;
     }
 
     public function fechaRegistroFormateada()
@@ -69,6 +78,4 @@ class User extends Authenticatable
         return "";
       }   
     }
-
-        
 }

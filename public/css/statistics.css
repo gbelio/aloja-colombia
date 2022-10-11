@@ -1,0 +1,54 @@
+@media (max-width: 600px) {
+    .__data{
+        overflow: hidden;
+    }
+
+    .__cards{
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .__card{
+        margin-bottom: 20px;
+    }
+    
+    .__tabla{
+        overflow:scroll;
+        max-width: 100vw !important;
+    }
+}
+
+@media (min-width: 600px) and (orientation:landscape) {
+    .__data{
+        overflow: hidden;
+    }
+
+    .__cards{
+        align-items:flex-end;
+        flex-wrap:wrap;
+    }
+    
+    .__card{
+        margin-bottom: 20px;
+    }
+    
+    .__tabla{
+        /* overflow:scroll; */
+        max-width: 100vw !important;
+    }
+}
+/* 
+.page-item {
+    border-radius: 10px !important;
+} */
+
+.pagination .active {
+
+	border-radius: 10px !important;
+
+	border-color: transparent !important;
+
+	background-color: #EF251B !important;
+
+}
