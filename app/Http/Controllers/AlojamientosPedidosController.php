@@ -118,14 +118,6 @@ class AlojamientosPedidosController extends Controller
     // 2) Motivo automático, pasadas las 24 horas desde job CronJobReservas
 
     public function cancelarReserva($alojamientoPedido){
-        /* MailerController::test($alojamientoPedido);
-            MailerController::ownerMailManualCancel($alojamientoPedido);
-            MailerController::adminMailManualCancel($alojamientoPedido);
-            MailerController::renterMailManualCancel($alojamientoPedido); */
-
-            // Liberar días
-        /* $desde = date($alojamientoPedido->fecha_desde);
-            $hasta = date($alojamientoPedido->fecha_hasta); */
         $alojamientoPedido->save();
         $bloqueosEliminar = AlojamientoCalendario::where(
             'alojamiento_id',
