@@ -3,6 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:url" content="https://alojacolombia.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Aloja Colombia" />
+    <meta property="og:description" content="Busca - Encuentra - Vive" />
+    <meta property="og:image" content="https://www.alojacolombia.com/img/logo-colombia2.png" />
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Aloja Colombia') }}</title>

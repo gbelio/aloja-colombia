@@ -10,7 +10,7 @@
             <div class="home-principal-titulo">Porque siempre tendrás<br/>seguridad a donde vayas.</div>
         </div>
     </div>
-    
+
     <div class="row home-opciones-row">
 
         <div class="home-opciones col-md-6 text-center" style="background-image: url({{ asset('img/playa-min.jpg')}})">
@@ -30,7 +30,7 @@
         </div>
 
     </div>
-    
+
     <div class="row home-opciones-row">
 
         <div class="home-opciones col-md-6 text-center" style="background-image: url({{ asset('img/ciudad-min.jpg')}})">

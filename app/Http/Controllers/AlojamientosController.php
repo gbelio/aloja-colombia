@@ -687,6 +687,13 @@ class AlojamientosController extends Controller
     }
 
     public function store(Request $request){
+        
+        if ($request->lat == null || $request->lng == null){
+            return Redirect::back()->withErrors(['msg' => 'Busque una ubicación correcta']);
+        }
+        if ($request->ciudad == null &&  $request->departamento == null){
+            return Redirect::back()->withErrors(['msg' => 'Primero busque la ubicación, luego arrastre el puntero para más precisión']);
+        }
         $alojamiento = new Alojamiento();
         if (!Auth::user()->esAdministrador()) {
             $alojamiento->propietario_id = Auth::user()->id;
@@ -1042,7 +1049,7 @@ class AlojamientosController extends Controller
                     $request->precio_limpieza
                 );
             } else {
-                $alojamiento->precio_limpieza = null;
+                $alojamiento->precio_limpieza = 0;
             }
             if (
                 $request->has('deposito') == true &&
@@ -1055,6 +1062,13 @@ class AlojamientosController extends Controller
                 );
             } else {
                 $alojamiento->precio_deposito = null;
+            }
+            if ($request->tipo_alquiler == 'HU') {
+                $alojamiento->huespedes_min = $request->huespedes_min;
+                $alojamiento->tipo_alquiler = $request->tipo_alquiler;
+            }else{
+                $alojamiento->tipo_alquiler = 'TO';
+                $alojamiento->huespedes_min = 1;
             }
             $alojamiento->alquiler_minimo = $request->alquiler_minimo;
             $alojamiento->descuento_semanal = $request->descuento_semanal;
@@ -1380,7 +1394,9 @@ class AlojamientosController extends Controller
                 $formatCD .= $alojamiento->ciudad[$i];
             }
         }else{
-            $formatCD .= $alojamiento->departamento[$i];
+            for ($i=0; $i < 3; $i++) { 
+                $formatCD .= $alojamiento->departamento[$i];
+            }
         }
         $alojamiento->codigo_alojamiento = strtoupper(
             $alojamiento->tipo_alojamiento . 

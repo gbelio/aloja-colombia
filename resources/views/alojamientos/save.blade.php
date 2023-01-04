@@ -12,10 +12,10 @@
             </div>
             <div class="seccionFormulario col-xl-5">
                 @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
+                    <div class="alert alert-danger" style="">
+                        <ul style="padding-top: 15px;">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li><b>{{ $error }}</b></li>
                             @endforeach
                         </ul>
                     </div>
@@ -94,18 +94,6 @@
                         ]) !!}
                         {!! Form::label('glamping', 'Glamping') !!}
                         <br />
-                        {!! Form::radio('tipo_alojamiento', 'FH', $alojamiento->tipo_alojamiento == 'FH' ? true : false, [
-                            'required' => 'required',
-                            'id' => 'finca_hotel',
-                        ]) !!}
-                        {!! Form::label('finca_hotel', 'Finca Hotel') !!}
-                        <br />
-                        {!! Form::radio('tipo_alojamiento', 'HT', $alojamiento->tipo_alojamiento == 'HT' ? true : false, [
-                            'required' => 'required',
-                            'id' => 'hotel',
-                        ]) !!}
-                        {!! Form::label('hotel', 'Hotel') !!}
-                        <br />
                     </div>
                     <br />
                     <h2>¿Dónde se encuentra ubicado tu alojamiento?</h2>
@@ -133,7 +121,7 @@
                         {!! Form::text('direccion', $alojamiento->direccion, [
                             'class' => 'form-control',
                             'placeholder' => 'Número de apartamento o casa',
-                            'maxlength' => '200',
+                            'maxlength' => '10',
                         ]) !!}
                         <small class="form-text text-muted">* Campo opcional</small>
                     </div>
@@ -141,7 +129,7 @@
                         {!! Form::text('barrio', $alojamiento->barrio, [
                             'class' => 'form-control',
                             'placeholder' => 'Barrio',
-                            'maxlength' => '150',
+                            'maxlength' => '50',
                         ]) !!}
                         <small class="form-text text-muted">* Campo opcional</small>
                     </div>
@@ -1840,7 +1828,7 @@
                                     <img id="fotoVista{{ $iFoto }}" src="{{ $sourceImagen }}"
                                         style="max-width: 100%; width: 100%;" />
                                     <label class="btn boton_accion {{ $boton_foto }}">
-                                        Subir foto <input id="foto{{ $iFoto }}" name="foto{{ $iFoto }}"
+                                        Seleccionar foto <input id="foto{{ $iFoto }}" name="foto{{ $iFoto }}"
                                             type="file" hidden
                                             onchange="previewImage('foto{{ $iFoto }}', 'fotoVista{{ $iFoto }}', {{ $iFoto }})">
                                     </label>
@@ -1888,7 +1876,7 @@
                 <div class="form-group">
                     {!! Form::text('titulo', $alojamiento->titulo, [
                         'class' => 'form-control',
-                        'maxlength' => '150',
+                        'maxlength' => '100',
                         'required' => 'required',
                     ]) !!}
                     <small class="form-text text-muted">Descripción hasta 150 caracteres.</small>
@@ -2043,21 +2031,78 @@
                 </div>
                 <h4>Al precio que coloques se te descontará un 3% en tu liquidación final correspondiente a mantenimiento de
                     la plataforma y gastos administrativos.</h4>
-                <br /><br />
+                <br />
+                <br />
+                <h2>¿Te interesa alquilar por cantidad de huespedes?</h2>
+                <div class="form-group">
+                    <?php
+                        $huespedesActivado = false;
+                        $estiloHuespedes = 'none';
+                        if ($alojamiento->tipo_alquiler != "TO") {
+                            $huespedesActivado = true;
+                            $estiloHuespedes = 'block';
+                        }
+                    ?>
+                    <div class="form-group custom-control custom-switch col-sm-12">
+                        <select name="tipo_alquiler" id="tipo_alquiler" class="form-control" style="" onchange='$("#seccionHuespedes").toggle()'>
+                            @if ($alojamiento->tipo_alquiler == null || $alojamiento->tipo_alquiler == 'TO')
+                                <option selected="selected" value="TO">Total</option>
+                                <option value="HU">Huespedes</option>
+                            @else
+                                <option value="TO">Total</option>
+                                <option selected="selected" value="HU">Huespedes</option>
+                            @endif
+                        </select>
+                    </div>
+                    <br>
+                    <div id="seccionHuespedes" style="display:{{ $estiloHuespedes }}">
+                        {!! Form::label('huespedes_min', 'Cantidad mínima de huespedes', ['class' => '']) !!}
+                        {{-- <span class="prefijo-pesos">$</span> --}}
+                        {{-- {!! Form::tel('precio_deposito', $alojamiento->precio_deposito, ['class' => 'prefijo-pesos-input form-control']) !!} --}}
+                        {!! Form::number('huespedes_min', $alojamiento->huespedes_min, [
+                            'step' => '1',
+                            'min' => '1',
+                            'max' => '9999',
+                            'class' => 'form-control',
+                            'required',
+                        ]) !!}
+                        <br>
+                    </div>
+                </div>
                 <div class="form-group temporada">
                     {!! Form::label('precio_alta', 'Temporada alta', ['class' => 'temporada_alta']) !!}
                     <span class="prefijo-pesos-temporada">$</span>
-                    {!! Form::tel('precio_alta', $alojamiento->precio_alta, ['class' => 'form-control', 'required']) !!}
+                    {!! Form::tel('precio_alta', $alojamiento->precio_alta, [
+                            'step' => '1',
+                            'min' => '0',
+                            'max' => '99999999',
+                            'class' => 'form-control',
+                            'required',
+                        ]) !!}
                 </div>
                 <div class="form-group temporada">
                     {!! Form::label('precio_media', 'Temporada media', ['class' => 'temporada_media']) !!}
                     <span class="prefijo-pesos-temporada">$</span>
-                    {!! Form::tel('precio_media', $alojamiento->precio_media, ['class' => 'form-control', 'required']) !!}
+                    {{-- {!! Form::tel('precio_media', $alojamiento->precio_media, ['class' => 'form-control', 'required']) !!} --}}
+                    {!! Form::tel('precio_media', $alojamiento->precio_media, [
+                            'step' => '1',
+                            'min' => '0',
+                            'max' => '99999999',
+                            'class' => 'form-control',
+                            'required',
+                        ]) !!}
                 </div>
                 <div class="form-group temporada">
                     {!! Form::label('precio_baja', 'Temporada baja', ['class' => 'temporada_baja']) !!}
                     <span class="prefijo-pesos-temporada">$</span>
-                    {!! Form::tel('precio_baja', $alojamiento->precio_baja, ['class' => 'form-control', 'required']) !!}
+                    {{-- {!! Form::tel('precio_baja', $alojamiento->precio_baja, ['class' => 'form-control', 'required']) !!} --}}
+                    {!! Form::tel('precio_baja', $alojamiento->precio_baja, [
+                            'step' => '1',
+                            'min' => '0',
+                            'max' => '99999999',
+                            'class' => 'form-control',
+                            'required',
+                        ]) !!}
                 </div>
                 <br />
                 @if ($alojamiento->tipo_alojamiento == 'CB' ||
@@ -2068,8 +2113,15 @@
                     <br />
                     <div class="form-group">
                         {!! Form::label('precio_limpieza', 'Servicio de limpieza', ['class' => '']) !!}
-                        <span class="prefijo-pesos">$</span>
-                        {!! Form::tel('precio_limpieza', $alojamiento->precio_limpieza, ['class' => 'prefijo-pesos-input form-control']) !!}
+                        {{-- <span class="prefijo-pesos">$</span> --}}
+                        {{-- {!! Form::tel('precio_limpieza', $alojamiento->precio_limpieza, ['class' => 'prefijo-pesos-input form-control']) !!} --}}
+                        {!! Form::tel('precio_limpieza', $alojamiento->precio_limpieza, [
+                            'step' => '1',
+                            'min' => '0',
+                            'max' => '9999999',
+                            'class' => 'form-control',
+                            'required',
+                        ]) !!}
                         <small class="form-text text-muted">* Es el dinero que destinas a limpiar tu propiedad, una vez los
                             huéspedes hayan terminado su estadía.</small>
                     </div>
@@ -2113,8 +2165,15 @@
                     <br />
                     <div id="seccionDeposito" style="display:{{ $estiloDeposito }}">
                         {!! Form::label('precio_deposito', 'Valor de depósito', ['class' => '']) !!}
-                        <span class="prefijo-pesos">$</span>
-                        {!! Form::tel('precio_deposito', $alojamiento->precio_deposito, ['class' => 'prefijo-pesos-input form-control']) !!}
+                        {{-- <span class="prefijo-pesos">$</span> --}}
+                        {{-- {!! Form::tel('precio_deposito', $alojamiento->precio_deposito, ['class' => 'prefijo-pesos-input form-control']) !!} --}}
+                        {!! Form::tel('precio_deposito', $alojamiento->precio_deposito, [
+                            'step' => '1',
+                            'min' => '0',
+                            'max' => '9999999',
+                            'class' => 'form-control',
+                            'required',
+                        ]) !!}
                     </div>
                 </div>
                 {{-- <br/>
@@ -2176,7 +2235,7 @@
                         'placeholder' => '',
                         'step' => '1',
                         'min' => '1',
-                        'max' => '9999999999',
+                        'max' => '999',
                     ]) !!}
                     <small class="form-text text-muted">* El descuento aplica para estadías de 7 a 13 noches.</small>
                 </div>
@@ -2189,7 +2248,7 @@
                         'placeholder' => '',
                         'step' => '1',
                         'min' => '1',
-                        'max' => '9999999999',
+                        'max' => '999',
                     ]) !!}
                     <small class="form-text text-muted">* El descuento aplica para estadías de 14 a 27 noches.</small>
                 </div>
@@ -2202,7 +2261,7 @@
                         'placeholder' => '',
                         'step' => '1',
                         'min' => '1',
-                        'max' => '9999999999',
+                        'max' => '999',
                     ]) !!}
                     <small class="form-text text-muted">* El descuento aplica para estadías de 28 noches o más.</small>
                 </div>
@@ -2333,7 +2392,7 @@
                         'class' => 'form-control',
                         'placeholder' => 'Nombre o razón social',
                         'required' => 'required',
-                        'maxlength' => '150',
+                        'maxlength' => '100',
                     ]) !!}
                 </div>
                 <div class="form-group">
@@ -2341,7 +2400,7 @@
                         'class' => 'form-control',
                         'placeholder' => 'Número de documento o NIT',
                         'required' => 'required',
-                        'maxlength' => '50',
+                        'maxlength' => '20',
                     ]) !!}
                 </div>
                 <div class="form-group">
@@ -2349,7 +2408,7 @@
                         'class' => 'form-control',
                         'placeholder' => 'Banco',
                         'required' => 'required',
-                        'maxlength' => '150',
+                        'maxlength' => '100',
                     ]) !!}
                 </div>
                 <div class="form-group">
@@ -2368,7 +2427,7 @@
                         'class' => 'form-control',
                         'placeholder' => 'Número de la cuenta',
                         'required' => 'required',
-                        'maxlength' => '150',
+                        'maxlength' => '30',
                     ]) !!}
                 </div>
                 <br />
@@ -2742,6 +2801,7 @@
                             if (results[0]) {
                                 bindDataToForm(results[0].formatted_address, marker.getPosition().lat(), marker
                                     .getPosition().lng());
+                                    bindDataToFormDetails(results[0]);
                                 infowindow.setContent(results[0].formatted_address);
                                 infowindow.open(map, marker);
                             }

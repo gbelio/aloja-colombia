@@ -12,6 +12,10 @@ CB: CABAÑA
 GL: GLAMPING
 FH: FINCA HOTEL
 
+Tipos de Alquiler:
+TO: Total
+HU: Por cantidad de huespedes
+
 Estados Reservas
 SO: SOLICITADA (A la espera que el dueño de la propiedad acepte o rechace el hospedaje)
 RE: RECHAZADA (Rechazada por el propietario, cancelada automáticamente o por el huesped)
