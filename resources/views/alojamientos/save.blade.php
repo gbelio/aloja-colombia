@@ -2033,17 +2033,17 @@
                     la plataforma y gastos administrativos.</h4>
                 <br />
                 <br />
-                <h2>¿Te interesa alquilar por cantidad de huespedes?</h2>
+                <h2>¿Alquiler total o por cantidad huespedes?</h2>
                 <div class="form-group">
                     <?php
                         $huespedesActivado = false;
                         $estiloHuespedes = 'none';
-                        if ($alojamiento->tipo_alquiler != "TO") {
+                        if ($alojamiento->tipo_alquiler == "HU") {
                             $huespedesActivado = true;
                             $estiloHuespedes = 'block';
                         }
                     ?>
-                    <div class="form-group custom-control custom-switch col-sm-12">
+                    <div class="form-group custom-control custom-switch col-sm-12" style="padding-left: 15px">
                         <select name="tipo_alquiler" id="tipo_alquiler" class="form-control" style="" onchange='$("#seccionHuespedes").toggle()'>
                             @if ($alojamiento->tipo_alquiler == null || $alojamiento->tipo_alquiler == 'TO')
                                 <option selected="selected" value="TO">Total</option>
@@ -2062,7 +2062,7 @@
                         {!! Form::number('huespedes_min', $alojamiento->huespedes_min, [
                             'step' => '1',
                             'min' => '1',
-                            'max' => '9999',
+                            'max' => '999',
                             'class' => 'form-control',
                             'required',
                         ]) !!}
@@ -2172,7 +2172,6 @@
                             'min' => '0',
                             'max' => '9999999',
                             'class' => 'form-control',
-                            'required',
                         ]) !!}
                     </div>
                 </div>

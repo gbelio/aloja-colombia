@@ -2154,6 +2154,10 @@ class MailerController extends Controller
                 $alojamientoPedido->huespedes .
             '</span>';
         if ($completo) {
+            $huespedesX = '';
+            if($alojamientoPedido->Alojamiento->tipo_alquiler == 'HU'){
+                $huespedesX = ' x ' . $alojamientoPedido->huespedes . ' huespedes';
+            }
             $liquidacion .='<hr/>
                 <span class="mail_liquidacion_titulo">Cobro</span>
                 <br/><br/>
@@ -2163,7 +2167,7 @@ class MailerController extends Controller
                     ) .
                     ' x ' .
                     $alojamientoPedido->cantidad_noches .
-                    ' noches 
+                    ' noches' . $huespedesX . ' 
                     <span class="mail_liquidacion_valor">$ ' .
                         $alojamientoPedido->Alojamiento->precioFormateadoMoneda(
                             $alojamientoPedido->valor_subtotal

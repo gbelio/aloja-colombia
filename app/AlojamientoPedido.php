@@ -24,16 +24,25 @@ class AlojamientoPedido extends Model
 
     public function valorSubtotalBaja()
     {
+        if($this->Alojamiento->tipo_alquiler == 'HU'){
+            return $this->cantidad_noches_baja * $this->valor_noche_promedio_baja * $this->huespedes;
+        }
         return $this->cantidad_noches_baja * $this->valor_noche_promedio_baja;
     }
 
     public function valorSubtotalMEdia()
     {
+        if($this->Alojamiento->tipo_alquiler == 'HU'){
+            return $this->cantidad_noches_media * $this->valor_noche_promedio_media * $this->huespedes;
+        }
         return $this->cantidad_noches_media * $this->valor_noche_promedio_media;
     }
 
     public function valorSubtotalAlta()
     {
+        if($this->Alojamiento->tipo_alquiler == 'HU'){
+            return $this->cantidad_noches_alta * $this->valor_noche_promedio_alta * $this->huespedes;
+        }
         return $this->cantidad_noches_alta * $this->valor_noche_promedio_alta;
     }
 }

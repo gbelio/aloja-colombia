@@ -155,9 +155,17 @@
                                         {{ $alojamiento->ciudad }}</div>
                                     <div class="busqueda-detalle-huespedes">{{ $alojamiento->leyendaHuespedesCuartos() }}
                                     </div>
-                                    <div class="busqueda-detalle-precio-titulo">Noche desde</div>
+                                    <div class="busqueda-detalle-precio-titulo">
+                                        @if($alojamiento->tipo_alquiler == 'HU')
+                                        Mínimo {{ $alojamiento->huespedes_min }} huéspedes
+                                        <br/>
+                                        @endif
+                                        Noche desde
+                                    </div>
                                     <div class="busqueda-detalle-precio">$
-                                        {{ $alojamiento->precioFormateado($alojamiento->precio_baja) }}</div>
+                                        {{ $alojamiento->precioFormateado($alojamiento->precio_baja) }}
+                                    </div>
+                                    
                                     {!! link_to(
                                         'alojamientos/' . $alojamiento->id . '?' . http_build_query(app('request')->query()),
                                         'Ver Alojamiento',

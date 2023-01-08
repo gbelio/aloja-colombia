@@ -228,6 +228,8 @@ document.getElementById('split-cash-2').addEventListener('click', function(){
 
 //Revisa si los días restantes son más de 30 y lo deja pagar en dos veces.
 function showSplit(){
+    document.getElementById('split-1').checked = "true";
+    document.getElementById('split-cash-1').checked = "true";
     const date_1 = new Date(document.getElementById('arrival-date').value);
     const date_2 = new Date(document.getElementById('confirmation-date').value);
     const difference = date_1.getTime() - date_2.getTime();
@@ -252,6 +254,9 @@ function showSplit(){
             document.getElementById('split-2').disabled = "true";
         }
     }
+    console.log('split: ', document.getElementById('split-pagos').value);
+    console.log('pay-status: ', document.getElementById('pay-status').value);
+    console.log('total days: ', totalDays);
 };
 //fin split de pagos
 

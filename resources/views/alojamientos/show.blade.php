@@ -104,7 +104,12 @@
                         ]) !!}
                         <?php $fecha_actual = \Carbon\Carbon::now()->format('Y-m-d'); ?>
                         @if ($errorCod != 'RESERVADO')
+                            @if($alojamiento->tipo_alquiler == 'HU')
+                            <div class="show-precio-titulo">Precio por huesped por noche</div>
+                            <div class="show-precio-titulo" style="margin-top: 0;">mínimo {{ $alojamiento->huespedes_min }} huespedes</div>
+                            @else
                             <div class="show-precio-titulo">{{ $precioTitulo }}</div>
+                            @endif
                             <div class="show-precio">$ {{ $alojamiento->precioFormateado($precioValor) }}</div>
                             <div class="row">
                                 {!! Form::hidden('l', app('request')->input('l')) !!}
@@ -192,9 +197,10 @@
                                     {!! Form::label('h', 'Huéspedes', ['class' => 'show-form-label']) !!}
                                     {!! Form::number('h', app('request')->input('h'), [
                                         'step' => '1',
-                                        'min' => '0',
-                                        'max' => '50',
+                                        'min' => $alojamiento->huespedes_min,
+                                        'max' => $alojamiento->huespedes,
                                         'class' => 'form-control',
+                                        'value' => $alojamiento->huespedes_min,
                                         'required',
                                         'onchange' => '$("#botonReservar").attr("disabled", true);',
                                     ]) !!}
@@ -225,6 +231,9 @@
                                         $ {{ $alojamiento->precioFormateado($precioValor) }}
                                         x {{ $diasTotales }}
                                         noches
+                                        @if($alojamiento->tipo_alquiler == 'HU')
+                                        x {{$cantidadHuespedes}} huespedes
+                                        @endif
                                         <span class="show-presupuesto-linea-subtotal">
                                             $ {{ $alojamiento->precioFormateado($precioTotal) }}
                                         </span>

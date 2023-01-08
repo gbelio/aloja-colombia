@@ -426,7 +426,9 @@
                                 <div class="show-presupuesto-linea">$
                                     {{ $alojamientoPedido->Alojamiento->precioFormateado($alojamientoPedido->valor_noche_promedio_baja) }}
                                     x {{ $alojamientoPedido->cantidad_noches_baja }} noches (temporada baja)
-                                    @if ($alojamientoPedido->Alojamiento->tipo_alquiler == 'HU')
+                                    @if ($alojamientoPedido->Alojamiento->tipo_alojamiento == 'HT' ||
+                                        $alojamientoPedido->Alojamiento->tipo_alojamiento == 'GL' ||
+                                        $alojamientoPedido->Alojamiento->tipo_alojamiento == 'FH')
                                         x {{$cantidadHuespedes}} huespedes
                                     @endif
                                     <span class="show-presupuesto-linea-subtotal">$
@@ -438,7 +440,9 @@
                                 <div class="show-presupuesto-linea">$
                                     {{ $alojamientoPedido->Alojamiento->precioFormateado($alojamientoPedido->valor_noche_promedio_media) }}
                                     x {{ $alojamientoPedido->cantidad_noches_media }} noches (temporada media)
-                                    @if ($alojamientoPedido->Alojamiento->tipo_alquiler == 'HU')
+                                    @if ($alojamientoPedido->Alojamiento->tipo_alojamiento == 'HT' ||
+                                        $alojamientoPedido->Alojamiento->tipo_alojamiento == 'GL' ||
+                                        $alojamientoPedido->Alojamiento->tipo_alojamiento == 'FH')
                                         x {{$cantidadHuespedes}} huespedes
                                     @endif
                                     <span class="show-presupuesto-linea-subtotal">$
@@ -450,7 +454,9 @@
                                 <div class="show-presupuesto-linea">$
                                     {{ $alojamientoPedido->Alojamiento->precioFormateado($alojamientoPedido->valor_noche_promedio_alta) }}
                                     x {{ $alojamientoPedido->cantidad_noches_alta }} noches (temporada alta)
-                                    @if ($alojamientoPedido->Alojamiento->tipo_alquiler == 'HU')
+                                    @if ($alojamientoPedido->Alojamiento->tipo_alojamiento == 'HT' ||
+                                        $alojamientoPedido->Alojamiento->tipo_alojamiento == 'GL' ||
+                                        $alojamientoPedido->Alojamiento->tipo_alojamiento == 'FH')
                                         x {{$cantidadHuespedes}} huespedes
                                     @endif
                                     <span class="show-presupuesto-linea-subtotal">$
@@ -462,9 +468,6 @@
                             <div class="show-presupuesto-linea">$
                                 {{ $alojamientoPedido->Alojamiento->precioFormateado($alojamientoPedido->valor_noche_promedio) }}
                                 x {{ $alojamientoPedido->cantidad_noches }} noches
-                                @if ($alojamientoPedido->Alojamiento->tipo_alquiler == 'HU')
-                                    x {{$cantidadHuespedes}} huespedes
-                                @endif
                                 <span class="show-presupuesto-linea-subtotal">$
                                     {{ $alojamientoPedido->Alojamiento->precioFormateado($alojamientoPedido->valor_subtotal) }}
                                 </span>

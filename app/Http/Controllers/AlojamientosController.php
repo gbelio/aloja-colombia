@@ -160,7 +160,11 @@ class AlojamientosController extends Controller
         $disponible = true;
         $desde = date($desdeParam);
         $hasta = date('Y-m-d', strtotime('-1 day', strtotime($hastaParam))); // Se resta 1 día al hasta porque no se cobra el día del checkout
-        $huespedes = $huespedesParam;
+        if($alojamiento->tipo_alquiler == 'HU' && $huespedesParam < $alojamiento->huespedes_min){
+            $huespedes = $alojamiento->huespedes_min;
+        }else{
+            $huespedes = $huespedesParam;
+        }
         $precioTitulo = 'Noche desde';
         $precioValor = $alojamiento->precio_baja;
         $precioTotal = 0;
@@ -218,12 +222,17 @@ class AlojamientosController extends Controller
                         $alojamiento->precio_media * $diasMedia +
                         $alojamiento->precio_alta * $diasAlta) /
                     $diasTotales;
-
-                $precioTotal =
-                    ($alojamiento->precio_baja * $diasBaja +
-                    $alojamiento->precio_media * $diasMedia +
-                    $alojamiento->precio_alta * $diasAlta);
-                
+                if($alojamiento->tipo_alquiler == 'TO'){
+                    $precioTotal =
+                        ($alojamiento->precio_baja * $diasBaja +
+                        $alojamiento->precio_media * $diasMedia +
+                        $alojamiento->precio_alta * $diasAlta);
+                }else{
+                    $precioTotal =
+                        ($alojamiento->precio_baja * $diasBaja +
+                        $alojamiento->precio_media * $diasMedia +
+                        $alojamiento->precio_alta * $diasAlta)*$huespedes;
+                }
                 $semanas = $diasTotales / 7;
                 $quincenas = $diasTotales / 14;
                 $meses = $diasTotales / 28;
