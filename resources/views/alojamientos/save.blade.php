@@ -358,6 +358,32 @@
                                 </div>
                                 <br />
                                 <div class="form-group form-numero">
+                                    {!! Form::label('camas_semi_doble[' . $iCuarto . ']', 'Cama semi doble') !!}
+                                    <button type="button" style="float: left;"
+                                        onclick="numero('camas_semi_doble[{{ $iCuarto }}]', '-', 0, 15);"
+                                        class="btn numeroBoton">-</button>
+                                    @if (!is_null($alojamientoCuarto))
+                                        {!! Form::number('camas_semi_doble[' . $iCuarto . ']', $alojamientoCuarto->camas_semi_doble, [
+                                            'step' => '1',
+                                            'min' => '0',
+                                            'max' => '15',
+                                            'class' => 'form-control numeroValor',
+                                        ]) !!}
+                                    @else
+                                        {!! Form::number('camas_semi_doble[' . $iCuarto . ']', 0, [
+                                            'step' => '1',
+                                            'min' => '0',
+                                            'max' => '15',
+                                            'class' => 'form-control numeroValor',
+                                        ]) !!}
+                                    @endif
+                                    <button type="button" style="float: left;"
+                                        onclick="numero('camas_semi_doble[{{ $iCuarto }}]', '+', 0, 15);"
+                                        class="btn numeroBoton">+</button>
+                                    <br />
+                                </div>
+                                <br />
+                                <div class="form-group form-numero">
                                     {!! Form::label('camas_sencilla[' . $iCuarto . ']', 'Cama sencilla') !!}
                                     <button type="button" style="float: left;"
                                         onclick="numero('camas_sencilla[{{ $iCuarto }}]', '-', 0, 15);"
@@ -1778,7 +1804,27 @@
                         - Por último verifica que todas tus fotos hayan salido con buena resolución, que no salgan movidas o
                         borrosas.<br /><br />
                     </div>
-                    <br />
+                    <br>
+                    <br>
+                    <br>
+                    <h2 style="text-align: center;">¡Agregá todas las fotos de una sola vez!</h2>
+                    <br>
+                    <div style="display: flex; flex-flow: column wrap;align-items: center;">
+                        <input class="__files" type='file' name='files[]' multiple style="margin-bottom: 1rem;">
+                        {!! Form::hidden('alojamiento_id', $alojamiento->id) !!}
+                        <button class="btn boton_accion boton_eliminar" type='submit' value="saveImages" name="navegacion">Guardar Fotos</button>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <?php
+                        $alojamientoFoto = App\AlojamientoFoto::where('alojamiento_id', $alojamiento->id)->first();
+                    ?>
+                    @if($alojamientoFoto)
+                    <a class="btn boton_accion boton_eliminar" style="display: flex; justify-content: space-around;" href="/images/{{$alojamiento->id}}">Reordenar fotos</a>
+                    @endif
+                    <br>
+                    <br>
                     <div class="form-row grupo-foto">
                         <?php
                         
@@ -2652,6 +2698,10 @@
                 camasDoble = document.getElementsByName('camas_doble[' + iCuartos + ']')[0];
                 if (camasDoble.value && camasDoble.value > 0) {
                     leyenda += 'Camas dobles: ' + camasDoble.value + '<br/>';
+                }
+                camasSemiDoble = document.getElementsByName('camas_semi_doble[' + iCuartos + ']')[0];
+                if (camasSemiDoble.value && camasSemiDoble.value > 0) {
+                    leyenda += 'Camas semi dobles: ' + camasSemiDoble.value + '<br/>';
                 }
                 camasSencilla = document.getElementsByName('camas_sencilla[' + iCuartos + ']')[0];
                 if (camasSencilla.value && camasSencilla.value > 0) {

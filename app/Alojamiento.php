@@ -173,6 +173,13 @@ class Alojamiento extends Model
             );
 
             $cuartoIndividual .= $this->cuartosFormateadosCama(
+                $alojamientoCuarto->camas_semi_doble,
+                'semidoble',
+                $grande,
+                true
+            );
+
+            $cuartoIndividual .= $this->cuartosFormateadosCama(
                 $alojamientoCuarto->camas_sencilla,
                 'sencilla',
                 $chica,

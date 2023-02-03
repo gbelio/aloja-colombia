@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,43 +9,38 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Aloja Colombia" />
     <meta property="og:description" content="Busca - Encuentra - Vive" />
-    <meta property="og:image" content="https://www.alojacolombia.com/img/logo-colombia2.png" />  
+    <meta property="og:image" content="https://www.alojacolombia.com/img/logo-colombia2.png" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Aloja Colombia') }}</title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{ asset('js/owl.carousel.js') }}" defer></script>
-    <script src="{{ asset('plugins/Chocolat/js/chocolat.js') }}" defer></script>
+    <script src="{{ asset('js/owl.carousel.js') }}"></script>
+    <script src="{{ asset('plugins/Chocolat/js/chocolat.js') }}"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:ital,wght@0,200;0,400;1,200;1,400" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app-ric.css?1_1') }}" rel="stylesheet">
-    <link href="{{ asset('css/slideshow.css?1_1') }}" rel="stylesheet">
     <link href="{{ asset('css/styles-ric.css?1_1') }}" rel="stylesheet">
-    <link href="{{ asset('css/statistics.css?1_1') }}" rel="stylesheet">
-    {{-- <link href="{{ asset('css/styles.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/Chocolat/css/chocolat.css') }}" rel="stylesheet">
     <link href="{{ asset('css/owl.theme.default.css') }}" rel="stylesheet">
-    {{-- <script src="https://kit.fontawesome.com/60d20bc537.js" crossorigin="anonymous"></script> --}}
     {{ Html::favicon('/favicon.png') }}
     @stack('head')
-    {{-- //MERCADOPAGO --}}
-    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script type="text/javascript" src="{{ asset('js/index.js') }}" defer></script>
-    
+    <script src={{ asset('js/jquery-3.6.3.min.js') }}></script>
+    <script src={{ asset('js/jquery-ui.min.js') }}></script>
+    <script src={{ asset('js/jquery.ui.touch-punch.min.js') }}></script>
+    <link rel="stylesheet" href="{{ asset('css/images.css') }}">
 </head>
 @if (Request::segment(1) == 'login' || Request::segment(1) == 'register' || Request::segment(1) == 'password')
+
     <body class="aloja-login-body">
     @else
+
         <body>
 @endif
 @if (Request::is('/'))
@@ -53,9 +49,9 @@
         <div id="app">
 @endif
 @if (Request::is('/') ||
-    Request::segment(2) == 'busqueda' ||
-    Request::segment(1) == 'alojar' ||
-    $view_name == 'alojamientos.show')
+        Request::segment(2) == 'busqueda' ||
+        Request::segment(1) == 'alojar' ||
+        $view_name == 'alojamientos.show')
     <nav class="navbar navbar-light bg-white shadow-sm">
     @else
         <nav class="navbar navbar-light bg-white shadow-sm nav-formulario">
@@ -87,10 +83,10 @@
         </button>
     @endguest
     @if (Request::is('/') ||
-        Request::segment(2) == 'busqueda' ||
-        Request::segment(1) == 'alojar' ||
-        $view_name == 'alojamientos.show' ||
-        app('request')->input('op') == 2)
+            Request::segment(2) == 'busqueda' ||
+            Request::segment(1) == 'alojar' ||
+            $view_name == 'alojamientos.show' ||
+            app('request')->input('op') == 2)
         @if (app('request')->input('op') == 2)
         @else
             <button class="btn boton_abrir_busqueda_menu" id="abrir-busqueda"
@@ -131,13 +127,14 @@
                     <a class="nav-link" href="{{ route('alojamientos.index') }}">Quiero alojar</a>
                 </li>
             @else
-                @if (!(Request::is('/') ||
-                    Request::segment(1) == 'alojar' ||
-                    Request::segment(2) == 'busqueda' ||
-                    Request::segment(1) == 'alojar' ||
-                    $view_name == 'alojamientos.show' ||
-                    (Request::segment(1) == 'alojamientosPedidos' && app('request')->input('op') == 2)
-                ))
+                @if (
+                    !(Request::is('/') ||
+                        Request::segment(1) == 'alojar' ||
+                        Request::segment(2) == 'busqueda' ||
+                        Request::segment(1) == 'alojar' ||
+                        $view_name == 'alojamientos.show' ||
+                        (Request::segment(1) == 'alojamientosPedidos' && app('request')->input('op') == 2)
+                    ))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('alojamientos.index') }}">Alojamientos</a>
                     </li>
@@ -182,9 +179,9 @@
     </div>
 </div>
 @if (Request::is('/') ||
-    Request::segment(2) == 'busqueda' ||
-    Request::segment(1) == 'alojar' ||
-    $view_name == 'alojamientos.show')
+        Request::segment(2) == 'busqueda' ||
+        Request::segment(1) == 'alojar' ||
+        $view_name == 'alojamientos.show')
     <div id="panel-busqueda">
         <br /><br />
         {!! Form::open([
@@ -196,16 +193,16 @@
         <?php
         $fecha_actual = \Carbon\Carbon::now()->format('Y-m-d');
         $queryLugares = '
-                                SELECT  DISTINCT(valor) AS valor FROM (
-                                  SELECT DISTINCT(barrio) AS valor FROM alojamientos
-                                  UNION
-                                  SELECT DISTINCT(ciudad) AS valor FROM alojamientos
-                                  UNION
-                                  SELECT DISTINCT(municipio) AS valor FROM alojamientos
-                                  UNION
-                                  SELECT DISTINCT(departamento) AS valor FROM alojamientos
-                                ) AS lugares ORDER BY valor
-                                  ';
+                                        SELECT  DISTINCT(valor) AS valor FROM (
+                                          SELECT DISTINCT(barrio) AS valor FROM alojamientos
+                                          UNION
+                                          SELECT DISTINCT(ciudad) AS valor FROM alojamientos
+                                          UNION
+                                          SELECT DISTINCT(municipio) AS valor FROM alojamientos
+                                          UNION
+                                          SELECT DISTINCT(departamento) AS valor FROM alojamientos
+                                        ) AS lugares ORDER BY valor
+                                          ';
         
         $lugares = DB::select($queryLugares);
         ?>
@@ -258,12 +255,35 @@
 @endif
 </nav>
 <main class="">
-    @yield('content')
+    <div class="container-pictures">
+        <a href="javascript:void(0);" class="reorder_link" id="saveReorder">Reordenar</a>
+        <div id="reorderHelper" class="light_box" style="display:none;">
+            1. Arrastrar las fotos a la posición deseada.<br />
+            2. Click 'Guardar' al finalizar.
+        </div>
+        <div id="galeria" class="gallery">
+            <ul id="widget" class="reorder_ul reorder-photos-list">
+                <input type="hidden" value="{{ $alojamientoFotos[0]->alojamiento_id }}" id="alojamiento_id">
+                @foreach ($alojamientoFotos as $alojamientoFoto)
+                    <?php
+                    $sourceImagen = URL::to('/uploads/' . $alojamientoFoto->archivo);
+                    ?>
+                    <div id="box">
+                        <li id="image_li_<?php echo $alojamientoFoto['id']; ?>" class="ul-sortable-handle">
+                            <a href="javascript:void(0);" style="float:none; border-radius: 5px;" class="image_link">
+                                <img src="<?php echo $sourceImagen; ?>" alt="" style="border-radius: 5px;">
+                            </a>
+                        </li>
+                    </div>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 </main>
 @if (Request::is('/') ||
-    Request::segment(2) == 'busqueda' ||
-    Request::segment(1) == 'alojar' ||
-    $view_name == 'alojamientos.show')
+        Request::segment(2) == 'busqueda' ||
+        Request::segment(1) == 'alojar' ||
+        $view_name == 'alojamientos.show')
     <div class="row pie pie-pc">
         <div class="col-md-3 text-center">
         </div>
@@ -339,6 +359,51 @@
 </div>
 </body>
 @stack('footer')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.reorder_link').on('click', function() {
+            $("ul.reorder-photos-list").sortable({
+                toterance: 'pointer'
+            });
+            $('.reorder_link').html('Guardar');
+            $('.reorder_link').attr("id", "saveReorder");
+            $('#reorderHelper').slideDown('slow');
+            $('.image_link').attr("href", "javascript:void(0);");
+            $('.image_link').css("cursor", "move");
+            $('#saveReorder').click(function(e) {
+                if (!$("#saveReorder i").length) {
+                    $(this).html('').prepend(
+                        '<span class="fa fa-spinner fa-spin fa-2x"></span>');
+                    $("ul.reorder-photos-list").sortable('destroy');
+                    $("#reorderHelper").html(
+                        "Reordenando Fotos - Se redireccionará a la sección de fotos."
+                        ).removeClass('light_box').addClass('notice notice_error');
+                    var h = [];
+                    $("ul.reorder-photos-list li").each(function() {
+                        h.push($(this).attr('id').substr(9));
+                    });
+                    $('.reorder_link').attr('style', 'background-color: white; color:red; border: none');
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "POST",
+                        url: "/images/update",
+                        data: {
+                            ids: " " + h + ""
+                        },
+                        success: function() {
+                            window.location.assign("/alojamientos/" + $(
+                                '#alojamiento_id').val() + "/edit?paso=5");
+                        }
+                    });
+                    return false;
+                }
+                e.preventDefault();
+            });
+        });
+    });
+</script>
 <script src="{{ asset('plugins/select2/js/select2.min.js') }}" defer></script>
 <script src="{{ asset('plugins/select2/js/i18n/es.js') }}" defer></script>
 <script type="text/javascript">
@@ -350,6 +415,7 @@
             // }
         });
     });
+
     function validarDatos() {
         fd = document.getElementsByName("fd")[0];
         fh = document.getElementsByName("fh")[0];
@@ -365,6 +431,7 @@
         }
         return true;
     }
+
     function setearFechaHastaDefault() {
         fd = document.getElementsByName("fd")[0];
         fh = document.getElementsByName("fh")[0];
@@ -382,9 +449,9 @@
     });
     $("#navbarSupportedContent").css("top", $(".navbar").css("height"));
     @if (Request::is('/') ||
-        Request::segment(2) == 'busqueda' ||
-        Request::segment(1) == 'alojar' ||
-        $view_name == 'alojamientos.show')
+            Request::segment(2) == 'busqueda' ||
+            Request::segment(1) == 'alojar' ||
+            $view_name == 'alojamientos.show')
         // Hide Header on on scroll down
         var didScroll;
         var lastScrollTop = 0;
@@ -399,6 +466,7 @@
                 didScroll = false;
             }
         }, 250);
+
         function hasScrolled() {
             var st = $(this).scrollTop();
             // Make sure they scroll more than delta
@@ -420,4 +488,5 @@
         }
     @endif
 </script>
+
 </html>

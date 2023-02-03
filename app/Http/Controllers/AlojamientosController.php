@@ -31,6 +31,40 @@ MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
 
 class AlojamientosController extends Controller
 {
+
+    public function saveImages($id){
+        $alojamientoFoto = AlojamientoFoto::where('alojamiento_id', $id)
+        ->orderBy('num_foto', 'DESC')->first();
+        dd($alojamientoFoto);
+        
+        $alojamientoFoto->archivo = $path;
+        $alojamientoFoto->nombre = $nombre;
+        $alojamientoFoto->save();
+        $alojamientoFoto = AlojamientoFoto::find($id);
+        $alojamientoFoto->num_foto = $count;
+        $alojamientoFoto->save();
+    }
+
+    public function images($id){
+        $alojamientoFotos = AlojamientoFoto::where('alojamiento_id', $id)->orderBy('num_foto', 'ASC')->get();
+        return view('alojamientos.images')
+            ->with('alojamientoFotos', $alojamientoFotos);
+    }
+
+    public function imagesUpdate(){
+        
+        $idArray = explode(",", $_POST['ids']);
+        
+            $count = 1;
+            foreach($idArray as $id){
+                $alojamientoFoto = AlojamientoFoto::find($id);
+                $alojamientoFoto->num_foto = $count;
+                $alojamientoFoto->save();
+                $count++;
+            }
+            return true;
+    }
+
     // Página de búsqueda abierta al público
     public function busqueda(Request $request){
         $opcion = $request->input('opcion');
@@ -1157,6 +1191,8 @@ class AlojamientosController extends Controller
                     $request->camas_queen[$iCuarto];
                 $alojamientoCuarto->camas_doble =
                     $request->camas_doble[$iCuarto];
+                $alojamientoCuarto->camas_semi_doble =
+                    $request->camas_semi_doble[$iCuarto];
                 $alojamientoCuarto->camas_sencilla =
                     $request->camas_sencilla[$iCuarto];
                 $alojamientoCuarto->camas_camarote =
@@ -1208,6 +1244,7 @@ class AlojamientosController extends Controller
             $alojamientoCuarto->camas_king = $request->camas_king[31];
             $alojamientoCuarto->camas_queen = $request->camas_queen[31];
             $alojamientoCuarto->camas_doble = $request->camas_doble[31];
+            $alojamientoCuarto->camas_semi_doble = $request->camas_semi_doble[31];
             $alojamientoCuarto->camas_sencilla = $request->camas_sencilla[31];
             $alojamientoCuarto->camas_camarote = $request->camas_camarote[31];
             $alojamientoCuarto->camas_auxiliar = $request->camas_auxiliar[31];
@@ -1305,6 +1342,7 @@ class AlojamientosController extends Controller
             }
         }
         if ($request->navegacion == 'save') {
+            
             return Redirect::to('/alojamientos')->with(
                 'notice',
                 'El alojamiento ha sido editado con éxito.'
@@ -1314,6 +1352,33 @@ class AlojamientosController extends Controller
                 $paso++;
             } else {
                 $paso--;
+            }
+            if($request->navegacion == 'saveImages'){
+                $lastPic = AlojamientoFoto::where('alojamiento_id', $id)
+                    ->orderBy('num_foto', 'DESC')->first();
+                    $iFoto = 1;
+                if(!is_null($lastPic)){
+                    $iFoto = $lastPic->num_foto + 1;
+                }
+                $id = $request->alojamiento_id;
+                foreach ($request->file() as $files){
+                    foreach($files as $image){
+                        $alojamientoFoto = new AlojamientoFoto();
+                        $alojamientoFoto->alojamiento_id = $id;
+                        $alojamientoFoto->num_foto = $iFoto;
+                        $nombre = $image->getClientOriginalName();
+                        $path = $image->storeAs(
+                            'propiedades/' . $id . '/foto' . $iFoto,
+                            $nombre,
+                            'public_uploads'
+                        );
+                        $alojamientoFoto->archivo = $path;
+                        $alojamientoFoto->nombre = $nombre;
+                        $alojamientoFoto->save();
+                        $iFoto++;
+                    }
+                };
+                return Redirect::back();
             }
             return Redirect::to(
                 '/alojamientos/' . $alojamiento->id . '/edit?paso=' . $paso

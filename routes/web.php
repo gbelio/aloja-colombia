@@ -54,6 +54,9 @@ Route::group(['middleware' => ['auth']], function () {
         '/alojamientos/{id}/reservar',
         'AlojamientosController@reservar'
     );
+    Route::get('/images/{id}', 'AlojamientosController@images');
+    Route::post('/images/update', 'AlojamientosController@imagesUpdate');
+    Route::post('/images/save', 'AlojamientosController@saveImages');
 
     Route::get('/home', function () {
         return redirect('alojamientos');
