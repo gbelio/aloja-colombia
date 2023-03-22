@@ -34,9 +34,7 @@ class AlojamientosController extends Controller
 
     public function saveImages($id){
         $alojamientoFoto = AlojamientoFoto::where('alojamiento_id', $id)
-        ->orderBy('num_foto', 'DESC')->first();
-        dd($alojamientoFoto);
-        
+            ->orderBy('num_foto', 'DESC')->first();
         $alojamientoFoto->archivo = $path;
         $alojamientoFoto->nombre = $nombre;
         $alojamientoFoto->save();
@@ -336,6 +334,7 @@ class AlojamientosController extends Controller
     // Página individual abierta al público
 
     public function show(Request $request, $id){
+
         // Parámetros
         $opcionParam = $request->input('opcion');
         $huespedesParam = $request->input('h');
@@ -1363,21 +1362,28 @@ class AlojamientosController extends Controller
                 $id = $request->alojamiento_id;
                 foreach ($request->file() as $files){
                     foreach($files as $image){
-                        $alojamientoFoto = new AlojamientoFoto();
-                        $alojamientoFoto->alojamiento_id = $id;
-                        $alojamientoFoto->num_foto = $iFoto;
-                        $nombre = $image->getClientOriginalName();
-                        $path = $image->storeAs(
-                            'propiedades/' . $id . '/foto' . $iFoto,
-                            $nombre,
-                            'public_uploads'
-                        );
-                        $alojamientoFoto->archivo = $path;
-                        $alojamientoFoto->nombre = $nombre;
-                        $alojamientoFoto->save();
-                        $iFoto++;
+                        if($image->getClientMimeType() == 'image/jpeg' || $image->getClientMimeType() == 'image/png' || $image->getClientMimeType() == 'image/gif'){
+                            $alojamientoFoto = new AlojamientoFoto();
+                            $alojamientoFoto->alojamiento_id = $id;
+                            $alojamientoFoto->num_foto = $iFoto;
+                            $nombre = $image->getClientOriginalName();
+                            $path = $image->storeAs(
+                                'propiedades/' . $id . '/foto' . $iFoto,
+                                $nombre,
+                                'public_uploads'
+                            );
+                            $alojamientoFoto->archivo = $path;
+                            $alojamientoFoto->nombre = $nombre;
+                            $alojamientoFoto->save();
+                            $iFoto++;
+                        }else{
+                            $formatError = 'Solo serán guardados los archivos que sean imagenes';
+                        }
                     }
                 };
+                if(isset($formatError)){
+                    return Redirect::back()->withErrors($formatError);
+                }
                 return Redirect::back();
             }
             return Redirect::to(
@@ -1452,6 +1458,7 @@ class AlojamientosController extends Controller
     public function inactivar(Request $request, $id){
         $alojamiento = Alojamiento::find($id);
         $alojamiento->estado = 'I';
+        $alojamiento->notification = null;
         $alojamiento->save();
         return Redirect::back()->with(
             'notice',

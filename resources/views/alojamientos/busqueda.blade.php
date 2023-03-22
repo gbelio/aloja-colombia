@@ -158,9 +158,12 @@
                                     <div class="busqueda-detalle-precio-titulo">
                                         @if($alojamiento->tipo_alquiler == 'HU')
                                         Mínimo {{ $alojamiento->huespedes_min }} huéspedes
+                                        <br>
+                                        Noche por huésped desde
                                         <br/>
-                                        @endif
+                                        @else
                                         Noche desde
+                                        @endif
                                     </div>
                                     <div class="busqueda-detalle-precio">$
                                         {{ $alojamiento->precioFormateado($alojamiento->precio_baja) }}

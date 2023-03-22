@@ -10,7 +10,7 @@
                         ?>
                         <div>
                             <a class="chocolat-image" href="{{ $sourceImagen }}" title="Foto {{ $alojamientoFoto->num_foto }}">
-                                <img class="imagen-slider" src="{{ $alojamientoFoto->srcImagen(400) }}" />
+                                <img onerror="this.style.display='none'" class="imagen-slider" src="{{ $alojamientoFoto->srcImagen(400) }}" />
                             </a>
                         </div>
                     @endforeach

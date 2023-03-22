@@ -1786,6 +1786,13 @@
                     <h3>Toma fotos con un celular o una cámara. Debes subir al menos una foto para publicar tu anuncio.
                         Podrás agregar nuevas o editarlas más adelante si lo deseas.</h3>
                     <br />
+                    <h3>En la plataforma NO esta permitido incluir en ninguno de los campos, ni en las fotografías datos de contacto e información personal como:</h3>
+                    <ul>
+                        <li style="list-style-type: disc;"><h3>e-mail, teléfono, WhatsApp o links.</h3></li>
+                        <li style="list-style-type: disc;"><h3>Marcas de agua, logos, códigos QR o textos.</h3></li>
+                    </ul>
+                    <h3>De NO cumplir con las condiciones, los administradores podrán modificar la publicación e incluso dar de baja tú propiedad.</h3>
+                    <br />
                     <img class="icono" src="{{ url('/img/consejo.svg') }}"><a class="btn boton_accion boton_eliminar"
                         data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                         aria-controls="collapseExample">Consejos para tomar fotografías</a><br />
@@ -1810,7 +1817,7 @@
                     <h2 style="text-align: center;">¡Agregá todas las fotos de una sola vez!</h2>
                     <br>
                     <div style="display: flex; flex-flow: column wrap;align-items: center;">
-                        <input class="__files" type='file' name='files[]' multiple style="margin-bottom: 1rem;">
+                        <input class="__files" type='file' name='files[]' accept="image/gif, image/jpeg, image/jpg, image/png" multiple style="margin-bottom: 1rem;">
                         {!! Form::hidden('alojamiento_id', $alojamiento->id) !!}
                         <button class="btn boton_accion boton_eliminar" type='submit' value="saveImages" name="navegacion">Guardar Fotos</button>
                     </div>
@@ -1896,8 +1903,15 @@
                 <h2>Describe tu propiedad</h2>
                 <h3>Cuéntanos qué es lo que más te gusta de tu alojamiento, qué espacios la caracterizan, descríbela por
                     dentro y por fuera, cuales son las áreas en las que sobresalen de tu propiedad y te hacen sentir
-                    orgulloso de ellas.<br /><br />Cuéntale a tus huéspedes porque debería elegir tu propiedad para
-                    alojarse.</h3>
+                    orgulloso de ellas.
+                    <br />
+                    <br />
+                    Cuéntale a tus huéspedes porque debería elegir tu propiedad para alojarse.
+                </h3>
+                <br />
+                <h3>
+                    Recuerda que <b>NO</b> deben incluir información personal como e-mails, teléfonos, WhatsApp o links. 
+                </h3>
                 <br />
                 <div class="form-group">
                     {!! Form::textarea('descripcion', $alojamiento->descripcion, [
@@ -2080,6 +2094,23 @@
                 <br />
                 <br />
                 <h2>¿Alquiler total o por cantidad huespedes?</h2>
+                <H3><b>Total</b>: Es el precio del alojamiento, por la cantidad de noches.</H3>
+                <H3><b>Huéspedes</b>: Es el precio del alojamiento por huésped, multiplicado por la cantidad de huéspedes más la cantidad de noches.</H3>
+                <ul>
+                    <li>La cantidad mínima de huéspedes, es el precio mínimo de quieres alquilar tu propiedad por noche.</li>
+                    <br />
+                    <li>Ejemplo:
+                        <br />
+                        Precio por huésped: $50.000
+                        <br />
+                        Cantidad de Noches: 5
+                        <br />
+                        Mínimo de Huéspedes: 10
+                        <br />
+                        Estadía por noche desde: $50.000 ($50.000 x 5) x 10 huéspedes.
+                        <br />
+                    </li>
+                </ul>
                 <div class="form-group">
                     <?php
                         $huespedesActivado = false;

@@ -16,30 +16,65 @@ class MailerController extends Controller
     static $MAIL_PAGOS = "pagosrecibidos@alojacolombia.com"; */
     static $MAIL_RESERVAS = "gastonb.exe@gmail.com";
     static $MAIL_PAGOS = "gastonb.exe@gmail.com";
-    static function test1($request){
-        $asuntoA="Payment"; 
-        $tituloA="Payment";
-        if(isset($request)){
-            $cuerpoA='<h2>Payment: </h2>'
-            . $request->id . '<br>'
-            . $request->status . '<br>'
-            . $request->status_detail . '<br>'
-            . $request->transaction_amount . '<br>';
-        }else{
-            $cuerpoA="request sin valores";
-        }
-        $message = Mail::to("gastonb.exe@gmail.com");
-        $message->send(new \App\Mail\MailGenerico($asuntoA, $tituloA, $cuerpoA));
-    }
-    static function test($alojamientoPedido){
-        $asuntoA="TEST"; 
-        $tituloA="TEST";
-        $cuerpoA=$alojamientoPedido->estado . $alojamientoPedido->id;
-
-        $message = Mail::to("gastonb.exe@gmail.com");
-        $message->send(new \App\Mail\MailGenerico($asuntoA, $tituloA, $cuerpoA));
-    }
     /////////////////////////////////////////////////////////////////////
+
+    // MAIL A PROPIETARIO RECORDANDO A LOS 30 DÍAS QUE ACTIVE SU PROPIEDAD. SE ENVÍA UNA SOLA VEZ.
+    static function ownerMailActivate($alojamientoIncompleto){
+        $asuntoA = 'Falta activar la propiedad';
+        $tituloA = '¡Activá tu propiedad!';
+        $cuerpoA = '<p><br>Hola ' . $alojamientoIncompleto->Propietario->name . ',</p>
+            <div style="text-align-last: center;"><h2>' . $alojamientoIncompleto->titulo . '</h2>
+                <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoIncompleto->fotoAlojamiento[0]->archivo. '">
+            </div>
+            <br>
+            <p>Gracias por ser parte de Aloja Colombia, la nueva plataforma de alquileres por días en Colombia.</p>
+            <p>Descubre alojamientos y experiencias únicas en toda Colombia.</p>
+            <p>
+                Queremos darte nuevamente la bienvenida e invitarte a que actives tu propiedad,
+                recuerda que publicarla en Aloja Colombia no tiene ningún costo.
+            </p>
+            <p><a href="https://alojacolombia.com/alojamientos/' . $alojamientoIncompleto->id . '/edit?paso=11">Activá tu propiedad haciendo click aquí</a></p>
+            <p>Anímate y comienza a ofrecer tú propiedad, y comienza a generar muchos ingresos con su alquiler.</p>
+            <p>Cualquier duda o consulta, estamos para colaborarte.</p>
+            <p>Saludos,</p>
+            <br>
+            <p>Equipo Aloja Colombia,</p><br><br>';
+        $message = Mail::to($alojamientoIncompleto->Propietario->email);
+        $message->send(new \App\Mail\MailGenerico($asuntoA, $tituloA, $cuerpoA));
+    }
+
+    // MAIL A PROPIETARIO RECORDANDO A LOS 15 DÍAS QUE COMPLETE LA CARGA. SE ENVÍA DOS VECES.
+    static function ownerMailFU($alojamientoIncompleto){
+        $fotoAlojamiento = "";
+        if(isset($alojamientoIncompleto->fotoAlojamiento[0]->archivo)){
+            $fotoAlojamiento = '<img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoIncompleto->fotoAlojamiento[0]->archivo. '">';
+        }
+        $asuntoA = 'Todavía no completaste la carga de tu alojamiento';
+        $tituloA = '¡Completá tu alojamiento!';
+        $cuerpoA = '<p><br>Hola ' . $alojamientoIncompleto->Propietario->name . ',</p>
+            <div style="text-align-last: center;"><h2>' . $alojamientoIncompleto->titulo . '</h2>' . 
+                $fotoAlojamiento . '
+            </div>
+            <br>
+            <p>Gracias por ser parte de Aloja Colombia, la nueva plataforma de alquileres por días en Colombia.</p>
+            <p>Descubre alojamientos y experiencias únicas en toda Colombia.</p>
+            <p>
+                Queremos darte nuevamente la bienvenida e invitarte a que termines de cargar los
+                datos tu propiedad para que puedas activarla, recuerda que publicarla en Aloja
+                Colombia no tiene ningún costo.
+            </p>
+            <p><a href="https://alojacolombia.com/alojamientos/' . $alojamientoIncompleto->id . '/edit?paso=11">Terminá la carga haciendo click aquí</a></p>
+            <p>Anímate y comienza a ofrecer tú propiedad, y comienza a generar muchos ingresos con su alquiler.</p>
+            <p>Cualquier duda o consulta, estamos para colaborarte.</p>
+            <p>Saludos,</p>
+            <br>
+            <p>Equipo Aloja Colombia,</p><br><br>';
+        $message = Mail::to($alojamientoIncompleto->Propietario->email);
+        $message->send(new \App\Mail\MailGenerico($asuntoA, $tituloA, $cuerpoA));
+    }
+
+    /////////////////////////////////////////////////////////////////////
+
     //MAIL DE BIENVENIDA A USUARIO
     static function userMailWelcome($user){
         $asunto = 'Hola ' . $user->name . ', ¡Bienvenido a Aloja Colombia!';
@@ -61,6 +96,9 @@ class MailerController extends Controller
         $message = Mail::to($user->email);
         $message->send(new \App\Mail\MailGenerico( $asunto, $titulo, $cuerpo));
     }
+
+    /////////////////////////////////////////////////////////////////////
+
     //MAIL A ADMINISTRADOR PAGO COMPLETO
     static function adminMailPC($alojamientoPedido, $payment){
         $asuntoAdmin = 'Reserva confirmada para '
@@ -75,8 +113,8 @@ class MailerController extends Controller
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
             <br>
-            <p><b>Código de la propiedad:</b> ' . $alojamientoPedido->alojamiento->codigo_alojamiento . '</p>
-            <hr/>
+            <p><b>Código de la propiedad:</b> ' . $alojamientoPedido->alojamiento->codigo_alojamiento . '</p>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <p><b>Datos bancarios</b></p>
             <p><b>Banco:</b> ' . $alojamientoPedido->alojamiento->cuenta_banco . '</p>
             <p><b>Nro de cuenta:</b> '. $alojamientoPedido->alojamiento->cuenta_nro . '</p>
@@ -264,7 +302,8 @@ class MailerController extends Controller
             <p><b>Segundo pago:</b> '. $alojamientoPedido->Alojamiento->precioFormateadoMoneda(
                 $alojamientoPedido->valor_total / 2) .' lo debe realizar antes del <b>'
                 . MailerController::dateFormater(Carbon::createFromFormat('Y-m-d H:i:s', $alojamientoPedido->fecha_desde)->subDays(15)->toDateString().' 00:00:00').'</b>.
-            </p>
+            </p>' . 
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -600,7 +639,8 @@ class MailerController extends Controller
         $tituloAdmin = '¡Reserva pendiente de pago - 24hs!';
         $cuerpoAdmin = '<p>Hola equipo Aloja,<br>' . $alojamientoPedido->Huesped->name . ' 
             hizo una reserva de pago en efectivo. Tiene 24hs para hacer el pago o la misma será cancelada.</p>
-            <br>
+            <br>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -818,7 +858,8 @@ class MailerController extends Controller
                         'Y-m-d H:i:s', $alojamientoPedido->fecha_desde
                     )->subDays(15)->toDateString().' 00:00:00'
                 ).'</b>.
-            </p>
+            </p>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -1045,7 +1086,8 @@ class MailerController extends Controller
                         'Y-m-d H:i:s', $alojamientoPedido->fecha_desde
                     )->subDays(15)->toDateString().' 00:00:00'
                 ) .'</b>.
-            </p>
+            </p>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -1577,7 +1619,8 @@ class MailerController extends Controller
             <p>Hay una reserva de ' . \Auth::user()->nombreCompleto() .
                 ' pendiente de aprobación por parte de ' .
                 $alojamiento->Propietario->nombreCompleto() . '.
-            </p>
+            </p>' . 
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -1664,9 +1707,8 @@ class MailerController extends Controller
         $titulo = 'Reserva no aprobada';
         $cuerpo =
             '<p>Hola Equipo Aloja Colombia,</p>' .
-            '<p>La reserva fue rechazada por no ser aceptada en el plazo de 24hs</p>
-            <p>El nombre del huesped es ' . $alojamientoPedido->Huesped->name . '</p>
-            <p>Contacto: <a href="mailto:' . $alojamientoPedido->Huesped->email . '">' . $alojamientoPedido->Huesped->email . '</a></p>
+            '<p>La reserva fue rechazada por no ser aceptada en el plazo de 24hs</p>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -1794,9 +1836,8 @@ class MailerController extends Controller
             dentro de los plazos establecidos.
         </p>
         <p>El pago debería haberse realizado antes de ' . $alojamientoPedido->fecha_confirmacion. '</p>
-        <p>El nombre del huesped es ' . $alojamientoPedido->Huesped->name . '</p>
-        <p>Contacto: <a href="mailto:' . $alojamientoPedido->Huesped->email . '">' . $alojamientoPedido->Huesped->email . '</a></p>
-        <p>Código de reserva: ' . $alojamientoPedido->codigo_reserva . '</p>
+        <p>Código de reserva: ' . $alojamientoPedido->codigo_reserva . '</p>' .
+        $contacto = MailerController::usersInfo($alojamientoPedido) . '
         <ul>
             <li>Si el pago no era efectuado pasadas 24 hs de los tiempos establecidos, la
                 reserva quedará Anulada y se aplicaron las respectivas políticas de cancelación.
@@ -1928,9 +1969,8 @@ class MailerController extends Controller
         $titulo = 'Reserva Cancelada';
         $cuerpo = '<p>Hola Equipo Aloja,</p>
             <p>Desafortunadamente la reserva fue cancelada por el huesped.</p>
-            <p>El nombre del huesped es ' . $alojamientoPedido->Huesped->name . '</p>
-            <p>Contacto: <a href="mailto:' . $alojamientoPedido->Huesped->email . '">' . $alojamientoPedido->Huesped->email . '</a></p>
-            <p>Código de reserva: ' . $alojamientoPedido->codigo_reserva . '</p>
+            <p>Código de reserva: ' . $alojamientoPedido->codigo_reserva . '</p>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;">
                 <h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
@@ -2013,10 +2053,10 @@ class MailerController extends Controller
     }
     //MAIL A INQUILINO - RESERVA ACEPTADA
     static function renterMailAccepted($alojamientoPedido){
-        $mensaje = '<p>Hemos enviado a la aprobación de la socitud de reserva.</p>
+        $mensaje = '<p>Hemos enviado la aprobación de la solicitud de reserva.</p>
             <br>
             <p>Una vez sea aprobado el pago, se te enviará un correo electrónico con los 
-                datos de contacto de tu húesped.
+                datos de contacto.
             </p>
             <br>
             <p>En caso que el pago no sea efectuado durante las próximas 24hs., 
@@ -2063,7 +2103,7 @@ class MailerController extends Controller
     }
         //MAIL A ADMIN - RESERVA ACEPTADA
     static function adminMailAccepted($alojamientoPedido){
-        $mensaje = '<p>Hemos enviado a la aprobación de la socitud de reserva.</p>
+        $mensaje = '<p>Hemos enviado la aprobación de la solicitud de reserva.</p>
             <br>
             <p>Una vez sea aprobado el pago, se te enviará un correo electrónico con los 
                 datos de contacto de tu húesped.
@@ -2080,7 +2120,8 @@ class MailerController extends Controller
         $cuerpo = '<p>Hola Equipo Aloja Colombia,</p>
             <p>Hay una reserva de ' . $alojamientoPedido->Huesped->nombreCompleto() . 
                 ' pendiente de pago por parte de ' . $alojamientoPedido->Alojamiento->Propietario->nombreCompleto() . '
-            </p>
+            </p>' .
+            $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -2325,5 +2366,40 @@ class MailerController extends Controller
             ' de ' .
             $fechaParse->format('Y');
         return $fechaFormateada;
+    }
+    //INFORMACIÓN DE USUARIOS PARA MAILS DE ADMINISTRACIÓN
+    static function usersInfo($alojamientoPedido){
+        $usersInfo ='
+        <hr/>
+        <p><b>Contacto Propietario</b></p>
+        <p>Nombre: ' . $alojamientoPedido->Alojamiento->Propietario->name . ' ' . $alojamientoPedido->Alojamiento->Propietario->apellido . '</p>
+        <p>Correo: ' . $alojamientoPedido->Alojamiento->Propietario->email . '</p>
+        <p>Teléfono: ' . $alojamientoPedido->Alojamiento->Propietario->celular . '</p>
+        <br>
+        <p><b>Contacto Huesped</b></p>
+        <p>Nombre: ' . $alojamientoPedido->Huesped->name . ' ' . $alojamientoPedido->Huesped->apellido . '</p>
+        <p>Correo: ' . $alojamientoPedido->Huesped->email . '</p>
+        <p>Teléfono: ' . $alojamientoPedido->Huesped->celular . '</p>
+        <hr/>
+        <br>';
+        return $usersInfo;
+    }
+    //TITULO Y FOTO
+    static function titleAndPic($alojamientoInactivo){
+        if($alojamientoInactivo->numero_transaccion2 != null){
+            $secondPay = '<p><b>El pago total de la reserva ha sido efectuado</b></p>
+            <p><b>Total de la reserva:</b> '.$alojamientoPedido->Alojamiento->precioFormateadoMoneda(
+                $alojamientoPedido->valor_total
+            ) .'</p>
+            <p><b>Primer pago aprobado:</b> '. $alojamientoPedido->Alojamiento->precioFormateadoMoneda(
+                $alojamientoPedido->valor_total / 2
+            )  .'</p>
+            <p><b>Número transacción:</b> '.$alojamientoPedido->numero_transaccion .'</p>
+            <p><b>Segundo pago aprobado:</b> '. $alojamientoPedido->Alojamiento->precioFormateadoMoneda(
+                $alojamientoPedido->valor_total / 2
+            )  .'</p>
+            <p><b>Número transacción:</b> '.$alojamientoPedido->numero_transaccion2 . '</p><hr/>';
+            return $secondPay;
+        }
     }
 }
