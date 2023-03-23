@@ -93,3 +93,6 @@ Route::get('/optimize', function() {
 
 Route::get('/statistics', 'StatisticsController@showAll')->middleware('admin');
 Route::get('/statistics/{id}', 'StatisticsController@show')->middleware('auth');
+Route::get('/users', 'StatisticsController@usersInfo')->middleware('admin');
+
+Route::get('/alojamientos/user/{id}', 'StatisticsController@userProperty')->middleware('admin');

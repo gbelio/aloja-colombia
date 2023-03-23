@@ -6,11 +6,10 @@ I: INACTIVA
 Tipos de Alojamientos:
 CS: CASA
 FN: FINCA
-HT: HOTEL
 AP: APARTAMENTO
 CB: CABAÑA
 GL: GLAMPING
-FH: FINCA HOTEL
+
 
 Tipos de Alquiler:
 TO: Total

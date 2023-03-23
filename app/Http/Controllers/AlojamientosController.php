@@ -31,7 +31,6 @@ MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
 
 class AlojamientosController extends Controller
 {
-
     public function saveImages($id){
         $alojamientoFoto = AlojamientoFoto::where('alojamiento_id', $id)
             ->orderBy('num_foto', 'DESC')->first();

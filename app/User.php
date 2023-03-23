@@ -43,30 +43,29 @@ class User extends Authenticatable
         $this->hasMany('App\Alojamiento');
     }
     
-    public function esAdministrador()
-    {
+    public function property(){
+       return $this->hasMany('App\Alojamiento', 'propietario_id');
+    }
+
+    public function esAdministrador(){
         return $this->admin ? true : false;
     }
 
-    public function nombreCompleto()
-    {
+    public function nombreCompleto(){
         return $this->name . ' ' . $this->apellido;
     }
 
-    public function name()
-    {
+    public function name(){
         return $this->name;
     }
 
-    public function fechaRegistroFormateada()
-    {
+    public function fechaRegistroFormateada(){
         $fechaDate = \Carbon\Carbon::parse($this->created_at); 
         $fechaFormateada = ucfirst($fechaDate->monthName) . ' de ' . $fechaDate->format('Y');
         return $fechaFormateada;
     }
 
-    public function sourceFoto() 
-    {
+    public function sourceFoto() {
       $archivo = $this->foto;
       if (Storage::exists($archivo)) {
         $full_path = storage_path() . '/app/'. $archivo;
