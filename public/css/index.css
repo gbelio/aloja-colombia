@@ -7,6 +7,16 @@ body {
     color: RGBA(0,0,0,0.8);
 }
 
+::-webkit-scrollbar {
+    width: 7px;
+    background-color: white !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #EF251B !important;
+    border-radius: 4px;
+}
+
 .__label-split{
     margin: 0 10px 0 40px;
 }
