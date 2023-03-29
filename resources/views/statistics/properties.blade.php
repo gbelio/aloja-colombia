@@ -27,7 +27,7 @@
     <div class="col-12 searchBar">
         <form action="/busqueda/property" class="offset-1" method="get" style="">
             @csrf
-            <input required placeholder='Código de propiedad...' type="text" name="clave">
+            <input required placeholder='Código de propiedad...' type="text" name="clave" autofocus>
             <button type="submit" value="" class="btn btn-success" name="" id="">
                 BUSCAR
             </button>
@@ -82,7 +82,7 @@
             </tbody>
         </table>
         <div class="__pagination" style="display: flex;justify-content: space-evenly;">
-            {{ $alojamientos->links() }}
+            @if($alojamientos != []){{ $alojamientos->links() }}@endif
         </div>
         <a href="{{ url()->previous() }}" class="boton-volver" role="button">
             <button class="__boton-trans btn btn-outline-danger" style="margin-left: 50px;">Volver</button>

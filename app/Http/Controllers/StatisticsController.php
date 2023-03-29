@@ -120,17 +120,23 @@ class StatisticsController extends Controller
     }
 
     public function propertiesInfo(){
-        $totalAlojamientos = 0;
         $alojamientos = Alojamiento::query()
             ->Paginate(10);
+        $totalAlojamientos = Alojamiento::count();
+        $totalInactivos = Alojamiento::where('estado', 'I')->count();
+        $totalActivos = Alojamiento::where('estado', 'A')->count();
+        $totalIncompletos = Alojamiento::where('mapa_locacion', null)
+            ->orWhere('mapa_locacion', null)
+            ->orWhere('huespedes', null)
+            ->orWhere('descripcion', null)
+            ->orWhere('check_in', null)
+            ->orWhere('precio_alta', null)
+            ->orWhere('cuenta_nombre', null)
+            ->count();
         if (count($alojamientos) != 0){
-            $totalAlojamientos = $alojamientos->count();
         }else{
             $alojamientos=[];
         }
-        $totalInactivos = 0;
-        $totalActivos = 0;
-        $totalIncompletos = 0;
         foreach ($alojamientos as $alojamiento) {
 
             if($alojamiento->tipo_alquiler = "TO"){
@@ -173,14 +179,12 @@ class StatisticsController extends Controller
             }
             
             if($alojamiento->estado == "I"){
-                $totalInactivos++;
                 if($alojamiento->mapa_locacion == null ||
                     $alojamiento->huespedes == null ||
                     $alojamiento->descripcion == null ||
                     $alojamiento->check_in == null ||
                     $alojamiento->precio_alta == null ||
                     $alojamiento->cuenta_nombre == null){
-                        $totalIncompletos++;
                         $alojamiento->carga = "Incompleta";
                         $alojamiento->estado = "Inactivo";
                     }else{
@@ -190,7 +194,6 @@ class StatisticsController extends Controller
             }else{
                 $alojamiento->carga = "Completa";
                 $alojamiento->estado = "Activo";
-                $totalActivos++;
             }
         } 
         return view('statistics.properties')
@@ -202,12 +205,12 @@ class StatisticsController extends Controller
     }
 
     public function userProperty($id){
-        $totalInactivos = 0;
-        $totalActivos = 0;
+        $totalAlojamientos = Alojamiento::where('propietario_id', $id)->count();
+        $totalInactivos = Alojamiento::where('estado', 'I')->where('propietario_id', $id)->count();
+        $totalActivos = Alojamiento::where('estado', 'A')->where('propietario_id', $id)->count();
         $totalIncompletos = 0;
         $user = User::find($id);
         $alojamientos = Alojamiento::where('propietario_id', '=', $id)->get();
-        $totalAlojamientos = $alojamientos->count();
         foreach ($alojamientos as $alojamiento) {
             if($alojamiento->tipo_alquiler = "TO"){
                 $alojamiento->tipo_alquiler = "TOTAL";
@@ -249,7 +252,6 @@ class StatisticsController extends Controller
             }
             
             if($alojamiento->estado == "I"){
-                $totalInactivos++;
                 if($alojamiento->mapa_locacion == null ||
                     $alojamiento->huespedes == null ||
                     $alojamiento->descripcion == null ||
@@ -266,7 +268,6 @@ class StatisticsController extends Controller
             }else{
                 $alojamiento->carga = "Completa";
                 $alojamiento->estado = "Activo";
-                $totalActivos++;
             }
         } 
         return view('statistics.property')
