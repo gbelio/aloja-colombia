@@ -29,9 +29,25 @@
             @endisset
         </div>
     </div>
+    <br>
+    <div class="col-12 searchBar">
+        <form action="/busqueda/user" class="offset-1" method="get" style="">
+            @csrf
+            <input required placeholder='email, nombre, apellido...' type="text" name="clave">
+            <button type="submit" value="" class="btn btn-success" name="" id="">
+                BUSCAR
+            </button>
+        </form>
+    </div>
+    @isset($error)
+    <span class="offset-1" style="color: red">{{$error}}</span>
+    <br>
+    <i class="offset-1">{{$response}}</i>
+    <br>
+    @endisset
         <br>
         <br>
-        <div class="__tabla" style="width: 90%;max-width: 90vw; margin:auto;">
+        <div class="__tabla" style="max-width: 90vw; margin:auto;">
             <table class="table table-hover table-striped">
                 <thead style="text-align: center;">
                     <tr>
@@ -59,7 +75,7 @@
                 </tbody>
             </table>
             <div class="__pagination" style="display: flex;justify-content: space-evenly;">
-                {{ $users->links() }}
+                @if($users != []){{ $users->links() }}@endif
             </div>
             <a href="{{ url()->previous() }}" class="boton-volver" role="button">
                 <button class="__boton-trans btn btn-outline-danger" style="margin-left: 50px;">Volver</button>

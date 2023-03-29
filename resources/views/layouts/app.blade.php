@@ -156,6 +156,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/users">Usuarios</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/properties">Propiedades</a>
+                    </li>
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="/statistics/{{ Auth::user()->id }}">Información</a>

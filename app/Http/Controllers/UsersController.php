@@ -5,6 +5,7 @@ use Auth;
 use Mail;
 use Storage;
 use App\User;
+use App\Alojamiento;
 use Illuminate\Support\Facades\Redirect;
 
 class UsersController extends Controller
@@ -17,9 +18,43 @@ class UsersController extends Controller
         }
     } 
 
-    public function index(Request $request)
+    public function search(Request $request)
     {
-    }
+        $user = User::query()
+            ->where('email', 'like', '%'.$request->clave.'%')
+            ->orWhere('name', 'like', '%'.$request->clave.'%')
+            ->orWhere('apellido', 'like', '%'.$request->clave.'%')
+            ->Paginate(10);
+        if (count($user) != 0){
+            $users = $user;
+            $response = 'Estos son los resultados para "'.$request->clave.'".';
+            $error="";
+        }else{
+            $users=[];
+            $response = "Por favor, revise la busqueda";
+            $error= 'Usuario no encontrado para clave: "'.$request->clave.'".';
+        }
+        $propietariosTotal = Alojamiento::query()
+            ->get()
+            ->groupBy('propietario_id')
+            ->count();
+        $alojamientosTotal = Alojamiento::where('estado','<>','I')
+            ->count();
+        $alojamientosInactivos = Alojamiento::where('estado','=','I')
+            ->count();
+        $usuariosTotal = User::count() - 1;
+        $huespedesTotal = $usuariosTotal - $propietariosTotal;
+
+        return view('statistics.users')
+            ->with('response', $response)
+            ->with('users', $users)
+            ->with('error', $error)
+            ->with('alojamientosTotal', $alojamientosTotal)
+            ->with('propietariosTotal', $propietariosTotal)
+            ->with('alojamientosInactivos', $alojamientosInactivos)
+            ->with('huespedesTotal', $huespedesTotal)
+            ->with('usuariosTotal', $usuariosTotal);
+}
 
     public function create()
     {
@@ -32,8 +67,6 @@ class UsersController extends Controller
     public function show($id)
     {
     }
-
-
 
     public function edit($id){
        $user = User::find($id);

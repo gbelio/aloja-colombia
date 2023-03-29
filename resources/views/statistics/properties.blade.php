@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="__data">
-        <h1 style="text-align: center;">Propiedades de {{$user->name}}</h1>
+        <h1 style="text-align: center;">Propiedades</h1>
         <br>
         <br>
         <div class="__cards" style="display: flex;justify-content: space-evenly;">
@@ -41,7 +41,6 @@
     @endisset
     <br>
     <br>
-    <h5 class="offset-1">{{$user->email}}</h5>
     <div class="__tabla" style="max-width: 90vw; margin:auto;">
         <br>
         <table class="table table-hover table-striped">
@@ -82,6 +81,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="__pagination" style="display: flex;justify-content: space-evenly;">
+            {{ $alojamientos->links() }}
+        </div>
         <a href="{{ url()->previous() }}" class="boton-volver" role="button">
             <button class="__boton-trans btn btn-outline-danger" style="margin-left: 50px;">Volver</button>
         </a>

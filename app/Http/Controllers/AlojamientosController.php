@@ -164,6 +164,96 @@ class AlojamientosController extends Controller
             ->with('alojamientos', $alojamientos);
     }
 
+    public function search(Request $request)
+    {
+        $totalAlojamientos = 0;
+        $alojamientos = Alojamiento::query()
+            ->where('codigo_alojamiento', 'like', '%'.$request->clave.'%')
+            ->Paginate(100);
+        if (count($alojamientos) != 0){
+            $response = 'Estos son los resultados para "'.$request->clave.'".';
+            $error="";
+            $totalAlojamientos = $alojamientos->count();
+        }else{
+            $alojamientos=[];
+            $response = "Por favor, ingrese un código de propiedad existente.";
+            $error= 'Propiedad no encontrada para clave: "'.$request->clave.'".';
+        }
+        $totalInactivos = 0;
+        $totalActivos = 0;
+        $totalIncompletos = 0;
+        foreach ($alojamientos as $alojamiento) {
+
+            if($alojamiento->tipo_alquiler = "TO"){
+                $alojamiento->tipo_alquiler = "TOTAL";
+            }else{
+                $alojamiento->tipo_alquiler = "CANT. HUESPED";
+            }
+
+            switch ($alojamiento->tipo_alojamiento) {
+                case 'AP':
+                    $alojamiento->tipo_alojamiento = 'Apartamento';
+                    break;
+                case 'CS':
+                    $alojamiento->tipo_alojamiento = 'Casa';
+                    break;
+                case 'CB':
+                    $alojamiento->tipo_alojamiento = 'Cabaña';
+                    break;
+                case 'FN':
+                    $alojamiento->tipo_alojamiento = 'Finca';
+                    break;
+                case 'GL':
+                    $alojamiento->tipo_alojamiento = 'Glamping';
+                    break;
+            }
+
+            switch ($alojamiento->notification) {
+                case 'NULL':
+                    $alojamiento->notification = 'Sin notificar';
+                    break;
+                case 'first':
+                    $alojamiento->notification = '1. Notificación Completar';
+                    break;
+                case 'second':
+                    $alojamiento->notification = '2. Notificación Completar';
+                    break;
+                case 'third':
+                    $alojamiento->notification = 'Notificación Activar';
+                    break;
+            }
+            
+            if($alojamiento->estado == "I"){
+                $totalInactivos++;
+                if($alojamiento->mapa_locacion == null ||
+                    $alojamiento->huespedes == null ||
+                    $alojamiento->descripcion == null ||
+                    $alojamiento->check_in == null ||
+                    $alojamiento->precio_alta == null ||
+                    $alojamiento->cuenta_nombre == null){
+                        $totalIncompletos++;
+                        $alojamiento->carga = "Incompleta";
+                        $alojamiento->estado = "Inactivo";
+                    }else{
+                        $alojamiento->carga = "Completa";
+                        $alojamiento->estado = "Inactivo";
+                }
+            }else{
+                $alojamiento->carga = "Completa";
+                $alojamiento->estado = "Activo";
+                $totalActivos++;
+            }
+        } 
+        return view('statistics.properties')
+            ->with('error', $error)
+            ->with('response', $response)
+            ->with('totalActivos', $totalActivos)
+            ->with('totalInactivos', $totalInactivos)
+            ->with('totalIncompletos', $totalIncompletos)
+            ->with('totalAlojamientos', $totalAlojamientos)
+            ->with('alojamientos', $alojamientos);
+    }
+
     public function verificarDisponibilidad(
         $id,
         $alojamiento,

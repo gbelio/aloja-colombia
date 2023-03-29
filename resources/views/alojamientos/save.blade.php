@@ -1910,7 +1910,7 @@
                 </h3>
                 <br />
                 <h3>
-                    Recuerda que <b>NO</b> deben incluir información personal como e-mails, teléfonos, WhatsApp o links. 
+                    Recuerda que <b>NO</b> debes incluir información personal como e-mails, teléfonos, WhatsApp o links. 
                 </h3>
                 <br />
                 <div class="form-group">
