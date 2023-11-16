@@ -349,7 +349,7 @@
                         <button type="submit" onclick="return confirm('Se confirmará la reserva. ¿Desea continuar?')"
                             value="CO" name="navegacion" style="" class="btn boton_accion">Confirmar</button>
                         <button type="submit" onclick="return confirm('Se rechazará la reserva. ¿Desea continuar?')"
-                            value="RE" name="navegacion" style=""
+                            value="CA" name="navegacion" style=""
                             class="btn boton_accion boton_eliminar">Rechazar</button>
                         <br /><br />
                         <br /><br />

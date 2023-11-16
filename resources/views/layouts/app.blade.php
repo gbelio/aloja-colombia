@@ -36,7 +36,7 @@
     {{ Html::favicon('/favicon.png') }}
     @stack('head')
     {{-- //MERCADOPAGO --}}
-    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/index.css?1_1') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script type="text/javascript" src="{{ asset('js/index.js') }}" defer></script>
@@ -222,6 +222,7 @@
                     <option value=""></option>
                     @foreach ($lugares as $item)
                         @if ($item->valor == app('request')->input('l'))
+                        
                             <option selected="selected" value="{{ $item->valor }}"> {{ $item->valor }} </option>
                         @else
                             <option value="{{ $item->valor }}"> {{ $item->valor }} </option>

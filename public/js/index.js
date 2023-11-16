@@ -280,6 +280,17 @@ function modal(action){
     else
         $('.modal').modal('hide');
 };
+
+function disableButton(){
+    let btn = document.getElementById('save-button');
+    let id = document.getElementById('alojamiento-id').value;
+    let back = document.getElementById('loader');
+    back.style.display='block';
+    btn.form.submit();
+    window.scrollTo(0, 0);
+    window.location.replace('/alojamientos/'+id+'/edit?paso=5');
+    }
+
 updatePrice();
 showSplit();
 loadCardForm();

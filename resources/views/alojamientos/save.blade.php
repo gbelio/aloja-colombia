@@ -1,9 +1,12 @@
 @extends('layouts.app')
 @section('content')
+    <div id='loader' style="position: absolute;background-color: black;width: 100vw;height: 400vh;z-index: 1;opacity: 66%;display:none">
+            <span class="fa fa-spinner fa-spin fa-3x" style="color: red;position: absolute;left: 45%;top: 10%;"></span>
+    </div>
     <?php
     $paso = app('request')->input('paso');
     ?>
-    <div class="container-fluid formulario">
+    <div class="container-fluid formulario loader">
         <div class="form-row" style="margin: 0">
             <div class="imagenPanelPC col-xl-7">
                 <video autoplay="autoplay" muted="muted" loop="loop" id="myVideo">
@@ -1816,10 +1819,11 @@
                     <br>
                     <h2 style="text-align: center;">¡Agregá todas las fotos de una sola vez!</h2>
                     <br>
+                    <input id='alojamiento-id' type="hidden" value="{{$alojamiento->id}}">
                     <div style="display: flex; flex-flow: column wrap;align-items: center;">
                         <input class="__files" type='file' name='files[]' accept="image/gif, image/jpeg, image/jpg, image/png" multiple style="margin-bottom: 1rem;">
                         {!! Form::hidden('alojamiento_id', $alojamiento->id) !!}
-                        <button class="btn boton_accion boton_eliminar" type='submit' value="saveImages" name="navegacion">Guardar Fotos</button>
+                        <button id="save-button" onclick="disableButton()" class="btn boton_accion boton_eliminar" type='submit' value="saveImages" name="navegacion">Guardar Fotos</button>
                     </div>
                     <br>
                     <br>
@@ -2650,7 +2654,7 @@
             {!! Form::close() !!}
         </div>
     </div>
-    </div>
+</div>
 @endsection
 @push('head')
     @if ($paso == 1)
