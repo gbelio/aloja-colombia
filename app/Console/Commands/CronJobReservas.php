@@ -32,7 +32,7 @@ class CronJobReservas extends Command
                         $alojamientoPedido->fecha_reclamo_aceptacion = \Carbon\Carbon::now();
                         $alojamientoPedido->save();
                         MailerController::ownerMailPending($alojamientoPedido);
-                    }elseif (((strtotime($ahora) - strtotime($alojamientoPedido->fecha_pedido))/60)/60 >= 24){
+                    }elseif (((strtotime($ahora) - strtotime($alojamientoPedido->fecha_pedido))/60)/60 >= 48){
                         $alojamientoPedido->estado = 'RE';
                         $alojamientoPedido->fecha_rechazo = \Carbon\Carbon::now();
                         $alojamientoPedido->save();
@@ -44,7 +44,7 @@ class CronJobReservas extends Command
                     break;
 
                 case 'CO':
-                    if(((strtotime($ahora) - strtotime($alojamientoPedido->fecha_confirmacion))/60)/60 >= 24){
+                    if(((strtotime($ahora) - strtotime($alojamientoPedido->fecha_confirmacion))/60)/60 >= 48){
                         $alojamientoPedido->estado = 'RE';
                         $alojamientoPedido->fecha_rechazo = \Carbon\Carbon::now();
                         $alojamientoPedido->save();
