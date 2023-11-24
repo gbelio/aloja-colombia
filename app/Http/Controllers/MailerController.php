@@ -380,7 +380,7 @@ class MailerController extends Controller
             </p>
             <ul style="text-align: left; padding-left: 0px;" style="text-align: left; padding-left: 0px;">
                 <li>Se te enviara un correo 24 horas antes de la fecha límite que debes realizar el pago.</li>
-                <li>Si el pago no es efectuado pasadas 24 hs de los tiempos establecidos, la reserva quedara 
+                <li>Si el pago no es efectuado pasadas 24hs de los tiempos establecidos, la reserva quedara 
                     Anulada y se aplicaran las respectivas políticas de cancelación de cada Alojamiento.
                 </li>
                 <li>Una vez realizado la totalidad del pago, se te enviara toda la información de tu Alojador 
@@ -511,10 +511,10 @@ class MailerController extends Controller
             . $alojamientoPedido->alojamiento->ciudad . ' del '
             . MailerController::dateFormater($alojamientoPedido->fecha_desde) . ' al '
             . MailerController::dateFormater($alojamientoPedido->fecha_hasta);
-        $tituloHuesped = 'Tienes 24hs para realizar el pago';
+        $tituloHuesped = 'Tienes 24 para realizar el pago';
         $cuerpoHuesped = '<p>Hola ' . $alojamientoPedido->Huesped->name . ',
             <br>
-            <p>¡Felicitaciones, tienes 24hs para realizar el pago!</p>
+            <p>¡Felicitaciones, tienes 24 para realizar el pago!</p>
             <br>
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
@@ -527,7 +527,7 @@ class MailerController extends Controller
             <br>
             <br>
             <p>Tu Alojador te estará esperando el<b> ' . MailerController::dateFormater($alojamientoPedido->fecha_desde) . '</b></p>
-            <p>Si no realizas el pago en <b>24hs</b>, tu reserva será <b>cancelada.</b></p>
+            <p>Si no realizas el pago en <b>24</b>, tu reserva será <b>cancelada.</b></p>
             ' .
                 ($liquidacion =
                     MailerController::liquidacion(
@@ -578,7 +578,7 @@ class MailerController extends Controller
         $tituloPropietario = '¡Felicitaciones estás a solo un paso!';
         $cuerpoPropietario = '<p>Hola ' . $alojamientoPedido->Alojamiento->Propietario->name . ',
             <br>
-            <p>¡Felicitaciones, ' . $alojamientoPedido->Huesped->name . ' tiene 24hs para realizar el pago!</p>
+            <p>¡Felicitaciones, ' . $alojamientoPedido->Huesped->name . ' tiene 24 para realizar el pago!</p>
             <br>
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
@@ -714,8 +714,8 @@ class MailerController extends Controller
                 ) .'
             </b>.
             <ul style="text-align: left; padding-left: 0px;">
-                <li>Se te enviara un correo 24 horas antes de la fecha límite que debes realizar el pago.</li>
-                <li>Si el pago no es efectuado pasadas 24 hs de los tiempos establecidos, la reserva quedara 
+                <li>Se te enviara un correo 24hs antes de la fecha límite que debes realizar el pago.</li>
+                <li>Si el pago no es efectuado pasadas 24hs de los tiempos establecidos, la reserva quedara 
                     Anulada y se aplicaran las respectivas políticas de cancelación de cada Alojamiento.
                 </li>
                 <li>Una vez realizado la totalidad del pago, se te enviara toda la información de tu Alojador y la ubicación exacta de tu Alojamiento.</li>
@@ -944,8 +944,8 @@ class MailerController extends Controller
                 ) .'</b>.
             </p>
             <ul style="text-align: left; padding-left: 0px;">
-                <li>Se te enviara un correo 24 horas antes de la fecha límite que debes realizar el pago.</li>
-                <li>Si el pago no es efectuado pasadas 24 hs de los tiempos establecidos, la reserva quedara 
+                <li>Se te enviara un correo 24hs antes de la fecha límite que debes realizar el pago.</li>
+                <li>Si el pago no es efectuado pasadas 24hs de los tiempos establecidos, la reserva quedara 
                     Anulada y se aplicaran las respectivas políticas de cancelación de cada Alojamiento.
                 </li>
                 <li>Una vez realizado la totalidad del pago, se te enviara toda la información de tu Alojador y 
@@ -1558,7 +1558,7 @@ class MailerController extends Controller
                     ) 
                 ) .
             '
-            <p>Tienes 24 horas para confirmar la reserva, entre más rápido respondas más tiempo tendrán tus huéspedes para organizar su viaje.</p>
+            <p>Tienes 48 horas para confirmar la reserva, entre más rápido respondas más tiempo tendrán tus huéspedes para organizar su viaje.</p>
             <p>Si tienes alguna pregunta o duda comunícate con nosotros al centro de ayuda 
                 <a href="mailto:ayuda@alojacolombia.com">ayuda@alojacolombia.com</a>
             </p>
@@ -1579,7 +1579,7 @@ class MailerController extends Controller
             . MailerController::dateFormater($alojamientoPedido->fecha_hasta);
         $titulo = 'Reserva pendiente de aprobación';
         $cuerpo = '<p>Hola ' . \Auth::user()->nombreCompleto() . ',</p>
-            <p>La reserva aún no está confirmada, Recibirás una respuesta dentro de las próximas 24 horas.</p>
+            <p>La reserva aún no está confirmada, Recibirás una respuesta dentro de las próximas 48 horas.</p>
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
             </div>
@@ -1647,7 +1647,7 @@ class MailerController extends Controller
 
     /////////////////////////////////////////////////////////////////////
 
-    //MAIL A PROPIETARIO - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 24HS (SO)
+    //MAIL A PROPIETARIO - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 48HS (SO)
     static function ownerMailAutoCancelSO($alojamientoPedido){
         $asunto = 'Reserva no aprobada – '
             . MailerController::dateFormater($alojamientoPedido->fecha_desde) . ' al '
@@ -1674,7 +1674,7 @@ class MailerController extends Controller
         );
         $message->send(new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo));
     }
-    //MAIL A INQUILINO - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 24HS (SO)
+    //MAIL A INQUILINO - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 48HS (SO)
     static function renterMailAutoCancelSO($alojamientoPedido){
         $asunto = $asunto = 'Reserva no aprobada – '
             . MailerController::dateFormater($alojamientoPedido->fecha_desde) . ' al '
@@ -1698,7 +1698,7 @@ class MailerController extends Controller
         $message = Mail::to($alojamientoPedido->Huesped->email);
         $message->send(new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo));
     }
-    //MAIL A ADMIN - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 24HS (SO)
+    //MAIL A ADMIN - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 48HS (SO)
     static function adminMailAutoCancelSO($alojamientoPedido){
         $asunto = 'Reserva no aprobada – '
             . MailerController::dateFormater($alojamientoPedido->fecha_desde) . ' al '
@@ -1707,7 +1707,7 @@ class MailerController extends Controller
         $titulo = 'Reserva no aprobada';
         $cuerpo =
             '<p>Hola Equipo Aloja Colombia,</p>' .
-            '<p>La reserva fue rechazada por no ser aceptada en el plazo de 24hs</p>' .
+            '<p>La reserva fue rechazada por no ser aceptada en el plazo de 48hs</p>' .
             $contacto = MailerController::usersInfo($alojamientoPedido) . '
             <div style="text-align-last: center;"><h2>' . $alojamientoPedido->alojamiento->titulo . '</h2>
                 <img style="width: 250px;border-radius: 3%;" src="https://alojacolombia.com/uploads/'. $alojamientoPedido->alojamiento->fotoAlojamiento[0]->archivo. '">
@@ -2011,7 +2011,7 @@ class MailerController extends Controller
                 datos de contacto de tu húesped.
             </p>
             <br>
-            <p>En caso que el pago no sea efectuado durante las próximas 24hs., 
+            <p>En caso que el pago no sea efectuado durante las próximas 24hs, 
                 la reserva se anulará automáticamente y se te notificará a tu correo electrónico.
             </p>';
             $asunto = 'Reserva aprobada pendiente de pago ' . $alojamientoPedido->alojamiento->titulo . ' en '
@@ -2307,7 +2307,7 @@ class MailerController extends Controller
         switch ($alojamientoPedido->Alojamiento->politica_cancelacion) {
             case 'F':
                 return '<p>Cuentas con una política de cancelación <b>Flexible</b>.<br>
-                    El ALOJADO recibirá un reembolso total de la reserva, si cancela 48 horas antes del Check In.</p>';
+                    El ALOJADO recibirá un reembolso total de la reserva, si cancela 24 horas antes del Check In.</p>';
                 break;
             case 'M':
                 return '<p>Cuentas con una política de cancelación <b>Moderada</b>.<br>

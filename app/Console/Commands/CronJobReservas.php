@@ -44,7 +44,7 @@ class CronJobReservas extends Command
                     break;
 
                 case 'CO':
-                    if(((strtotime($ahora) - strtotime($alojamientoPedido->fecha_confirmacion))/60)/60 >= 48){
+                    if(((strtotime($ahora) - strtotime($alojamientoPedido->fecha_confirmacion))/60)/60 >= 24){
                         $alojamientoPedido->estado = 'RE';
                         $alojamientoPedido->fecha_rechazo = \Carbon\Carbon::now();
                         $alojamientoPedido->save();

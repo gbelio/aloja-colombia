@@ -1573,4 +1573,9 @@ class AlojamientosController extends Controller
             $alojamiento->politica_cancelacion . $formatID . $formatCD);
         $alojamiento->save();
     }
+
+    public function optimize(){
+        $output = [];
+        \Artisan::call('optimize', $output);
+    }
 }

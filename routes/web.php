@@ -86,10 +86,7 @@ Route::post('/cash_process_payment', [
 Route::post('/webhooks', 'WebhookController@handle');
 
 //PHP ARTISAN COMMANDS
-Route::get('/optimize', function() {
-    $output = [];
-    \Artisan::call('optimize', $output);
-});
+Route::get('/optimize', 'AlojamientosController@optimize');
 
 Route::get('/statistics', 'StatisticsController@showAll')->middleware('admin');
 Route::get('/statistics/{id}', 'StatisticsController@show')->middleware('auth');
