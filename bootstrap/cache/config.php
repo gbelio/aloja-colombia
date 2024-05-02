@@ -597,7 +597,7 @@
         'port' => '587',
         'encryption' => 'TLS',
         'username' => 'gastonb.bkp@gmail.com',
-        'password' => 'yujrdnisdpnsczjy',
+        'password' => 'zksfclxkiyasrzkj',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),

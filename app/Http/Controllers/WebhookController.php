@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AlojamientoPedido;
+use App\Alojamiento;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use MercadoPago;
 use App\Http\Controllers\MailerController;
+use App\Http\Controllers\WhatsAppController;
 
 class WebhookController extends Controller
 {
@@ -31,12 +33,12 @@ class WebhookController extends Controller
                 // $request contiene la informaciòn relacionada a la notificaciòn.
                 break;
         }
-        MailerController::test1($payment);
         if($payment->status == "approved"){
             $alojamientoPedido = AlojamientoPedido::where('numero_transaccion', $request["data"]["id"])->whereNull('estado_transaccion')->first();
             if (!$alojamientoPedido){
             $alojamientoPedido = AlojamientoPedido::where('numero_transaccion2', $request["data"]["id"])->whereNull('estado_transaccion2')->first();
             }
+            $alojamiento = Alojamiento::find($alojamientoPedido->alojamiento_id);
         }
         if(!$alojamientoPedido){
             return response("OK", 200);
@@ -53,6 +55,8 @@ class WebhookController extends Controller
             MailerController::renterMailPC($alojamientoPedido, $payment);
             //MAIL A PROPIETARIO
             MailerController::ownerMailPC($alojamientoPedido, $payment);
+            //WHATSAPP A PROPIETARIO
+            WhatsAppController::messagePC($alojamiento, $alojamientoPedido);
         }elseif ($alojamientoPedido->estado == 'PP') {
             $alojamientoPedido->estado = 'PC';
             $alojamientoPedido->fecha_pago = date('Y-m-d H:i:s');
@@ -65,6 +69,8 @@ class WebhookController extends Controller
             MailerController::renterMailPC($alojamientoPedido, $payment);
             //MAIL A PROPIETARIO
             MailerController::ownerMailPC($alojamientoPedido, $payment);
+            //WHATSAPP A PROPIETARIO
+            WhatsAppController::messagePC($alojamiento, $alojamientoPedido);
         }elseif ($alojamientoPedido->estado == 'CO') {
             $alojamientoPedido->estado = 'PP';
             $alojamientoPedido->fecha_pago = date('Y-m-d H:i:s');

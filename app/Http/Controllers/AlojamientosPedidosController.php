@@ -9,6 +9,7 @@ use App\AlojamientoPedido;
 use App\AlojamientoCalendario;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MailerController;
+use App\Http\Controllers\WhatsAppController;
 use Carbon\Carbon;
 
 class AlojamientosPedidosController extends Controller
@@ -130,16 +131,21 @@ class AlojamientosPedidosController extends Controller
 
     public function update(Request $request, $id){
         $alojamientoPedido = AlojamientoPedido::find($id);
-        /* $alojamiento = Alojamiento::find($alojamientoPedido->alojamiento_id); */
+        $alojamiento = Alojamiento::find($alojamientoPedido->alojamiento_id);
         $estadoNuevo = $request->input('navegacion');
         $mensaje = '';
-        if ($estadoNuevo == 'CO') {
+        if ($alojamientoPedido->estado == 'RE' || $alojamientoPedido->estado == 'CO' && !Auth::user()->esAdministrador()){
+            WhatsAppController::ownerDoubleResponse($alojamientoPedido);
+            exit;
+        }
+        if ($estadoNuevo == 'CO' || $estadoNuevo == 'Aceptar') {
             $alojamientoPedido->estado = 'CO';
             $alojamientoPedido->fecha_confirmacion = \Carbon\Carbon::now();
             MailerController::ownerMailAccepted($alojamientoPedido);
             MailerController::renterMailAccepted($alojamientoPedido);
             MailerController::adminMailAccepted($alojamientoPedido);
-        } elseif ($estadoNuevo == 'RE') {
+            WhatsAppController::renterMessageAccepted($alojamiento, $alojamientoPedido);
+        } elseif ($estadoNuevo == 'RE' || $estadoNuevo == 'Rechazar') {
             $alojamientoPedido->estado = 'RE';
             $alojamientoPedido->fecha_rechazo = \Carbon\Carbon::now();
             $this->cancelarReserva($alojamientoPedido);

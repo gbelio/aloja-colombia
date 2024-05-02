@@ -97,3 +97,9 @@ Route::get('/properties', 'StatisticsController@propertiesInfo')->middleware('ad
 Route::get('/alojamientos/user/{id}', 'StatisticsController@userProperty')->middleware('admin');
 Route::get('/busqueda/user', 'UsersController@search')->middleware('admin');
 Route::get('/busqueda/property', 'AlojamientosController@search')->middleware('admin');
+
+//whatsapp
+
+Route::get('/sendWhatsapp', 'WhatsAppController@sendWhatsapp');
+Route::post('/webhook', 'WhatsAppController@recibe');
+Route::get('/webhook', 'WhatsAppController@webhook');

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AlojamientosPedidosController;
 use App\Http\Controllers\AlojamientosController;
 use App\Http\Controllers\MailerController;
+use App\Http\Controllers\WhatsAppController;
 //MERCADOPAGO
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -113,7 +114,7 @@ class AlojamientosController extends Controller
         // Búsqueda por playa, ciudad, naturaleza o campo
         else {
             if ($opcion == 'pl') {
-                $alojamientos = $alojamientos->where('sitio_playa', 1);
+                $alojamientos = $alojamientos->where('sitio_playa', 1)->inRandomOrder();
                 $resultadoLeyenda = 'Cerca de la playa';
             } elseif ($opcion == 'na') {
                 $alojamientos = $alojamientos->where(function ($q) {
@@ -122,14 +123,14 @@ class AlojamientosController extends Controller
                         ->orWhere('sitio_sendero_caminar', 1)
                         ->orWhere('sitio_pesca', 1)
                         ->orWhere('sitio_sendero_ecologico', 1);
-                });
+                })->inRandomOrder();
                 $resultadoLeyenda = 'Conectate con la naturaleza';
             } elseif ($opcion == 'ci') {
                 $alojamientos = $alojamientos->where(function ($q) {
                     $q
                         ->where('tipo_alojamiento', 'CS')
                         ->orWhere('tipo_alojamiento', 'AP');
-                });
+                })->inRandomOrder();
                 $resultadoLeyenda = 'Ciudades con encanto';
             } elseif ($opcion == 'ca') {
                 $alojamientos = $alojamientos->where(function ($q) {
@@ -137,7 +138,7 @@ class AlojamientosController extends Controller
                         ->where('tipo_alojamiento', 'FN')
                         ->orWhere('tipo_alojamiento', 'CB')
                         ->orWhere('tipo_alojamiento', 'CL');
-                });
+                })->inRandomOrder();
                 $resultadoLeyenda = 'Lugares campestres';
             }
             // Opción errónea
@@ -639,6 +640,8 @@ class AlojamientosController extends Controller
             MailerController::ownerMailPendingAprobation($alojamiento, $alojamientoPedido);
             MailerController::renterMailPendingAprobation($alojamiento, $alojamientoPedido);
             MailerController::adminMailPendingAprobation($alojamiento, $alojamientoPedido);
+            // Whatsapp
+            WhatsAppController::ownerMessagePendingAprobation($alojamiento, $alojamientoPedido);
         }
         return View('alojamientos.show')
             ->with('disponible', $disponible)
@@ -1511,6 +1514,7 @@ class AlojamientosController extends Controller
     }
 
     public function activar(Request $request, $id){
+        AlojamientosPedidosController::update($alojamientoPedidoId, $alojamientoPedidoStatus);
         $alojamiento = Alojamiento::find($id);
         $alojamientoFotoPrincipal = AlojamientoFoto::where(
             'alojamiento_id',

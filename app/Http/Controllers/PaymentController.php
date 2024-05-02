@@ -18,6 +18,7 @@ use Mail;
 use Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\MailerController;
+use App\Http\Controllers\WhatsAppController;
 
 use Illuminate\Support\Facades\Redirect;
 
@@ -25,8 +26,7 @@ MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
 
 class PaymentController extends Controller
 {
-    public function cardProcessPayment(Request $request, Response $response)
-    {
+    public function cardProcessPayment(Request $request, Response $response){
         try {
             $contents = json_decode(file_get_contents('php://input'), true);
             $parsed_request = $request->withParsedBody($contents);
@@ -79,6 +79,8 @@ class PaymentController extends Controller
                 MailerController::ownerMailPC($alojamientoPedido, $payment);
                 //MAIL INQUILINO
                 MailerController::renterMailPC($alojamientoPedido, $payment);
+                //WHATSAPP A PROPIETARIO
+                WhatsAppController::messagePC($alojamiento, $alojamientoPedido);
                 
             } elseif ( $payment->status == 'approved' && $payment->transaction_amount < $alojamientoPedido->valor_total && !($alojamientoPedido->estado == 'PP')){
                 $alojamientoPedido->estado = 'PP';
@@ -105,6 +107,8 @@ class PaymentController extends Controller
                 MailerController::renterMailPC($alojamientoPedido, $payment);
                 //MAIL A PROPIETARIO
                 MailerController::ownerMailPC($alojamientoPedido, $payment);
+                //WHATSAPP A PROPIETARIO
+                WhatsAppController::messagePC($alojamiento, $alojamientoPedido);
             }
             //busca el alojamiento pedido y lo pone en Pago Parcial o Pago Completo
             return $response

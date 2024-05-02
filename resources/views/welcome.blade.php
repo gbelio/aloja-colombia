@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container-fluid inicio">
-
         <div class="row">
             <div class="home-principal cb-slideshow col-md-12 text-center">
                 <li><span>Image 01</span></li>
@@ -15,10 +14,7 @@
                 <div class="home-principal-titulo">Porque siempre tendrás seguridad a donde vayas.</div>
             </div>
         </div>
-
-
         <div class="home-opciones-viajar">¿A dónde quieres viajar?</div>
-
         <div class="row home-opciones-row"
             style="border: 5px solid white; border-bottom: 0px!important; max-width: 1380px; margin: auto;">
 

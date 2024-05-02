@@ -55,6 +55,10 @@ class User extends Authenticatable
         return $this->name . ' ' . $this->apellido;
     }
 
+    public function celular(){
+        return $this->celular;
+    }
+
     public function name(){
         return $this->name;
     }
