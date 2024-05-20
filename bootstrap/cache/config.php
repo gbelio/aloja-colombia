@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Aloja Colombia',
+    'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -10,7 +10,7 @@
     'locale' => 'es',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:5FuJZDiAqk4ZTxCu0YnJCuYdyp1IMSovb9Orkk4wEmM=',
+    'key' => 'base64:RneT1Qk+mOuVUfFwQ/zXDzohjvaG+Ct6cestKSEzP0U=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -131,7 +131,7 @@
   array (
     'backup' => 
     array (
-      'name' => 'Aloja Colombia',
+      'name' => 'Laravel',
       'source' => 
       array (
         'files' => 
@@ -201,7 +201,7 @@
         'to' => 'your@example.com',
         'from' => 
         array (
-          'address' => 'notificacion@alojacolombia.com',
+          'address' => 'info@alojacolombia.com',
           'name' => 'Aloja Colombia',
         ),
       ),
@@ -217,7 +217,7 @@
     array (
       0 => 
       array (
-        'name' => 'Aloja Colombia',
+        'name' => 'Laravel',
         'disks' => 
         array (
           0 => 'local',
@@ -337,7 +337,7 @@
         'endpoint' => NULL,
       ),
     ),
-    'prefix' => 'aloja_colombia_cache',
+    'prefix' => 'laravel_cache',
   ),
   'cors' => 
   array (
@@ -435,7 +435,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'aloja_colombia_database_',
+        'prefix' => 'laravel_database_',
       ),
       'default' => 
       array (
@@ -597,7 +597,7 @@
         'port' => '587',
         'encryption' => 'TLS',
         'username' => 'gastonb.bkp@gmail.com',
-        'password' => 'zksfclxkiyasrzkj',
+        'password' => 'gwywvdatwzdrjymc',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -630,7 +630,7 @@
     ),
     'from' => 
     array (
-      'address' => 'notificacion@alojacolombia.com',
+      'address' => 'info@alojacolombia.com',
       'name' => 'Aloja Colombia',
     ),
     'markdown' => 
@@ -712,8 +712,8 @@
     ),
     'mercadopago' => 
     array (
-      'key' => 'TEST-d5af6a23-b8ed-49d4-95d4-e7842fe49d08',
-      'token' => 'TEST-8713366655007960-070512-905e48e99ff04ca081f34b010c2459dc-1155039292',
+      'key' => NULL,
+      'token' => NULL,
     ),
   ),
   'session' => 
@@ -731,7 +731,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'aloja_colombia_session',
+    'cookie' => 'laravel_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -754,7 +754,7 @@
     array (
       'font_dir' => 'C:\\xampp\\htdocs\\aloja-colombia\\storage\\fonts/',
       'font_cache' => 'C:\\xampp\\htdocs\\aloja-colombia\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\ADMINI~1\\AppData\\Local\\Temp',
+      'temp_dir' => 'C:\\Users\\Admin\\AppData\\Local\\Temp',
       'chroot' => 'C:\\xampp\\htdocs\\aloja-colombia',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
@@ -783,8 +783,16 @@
       'grouping_type' => NULL,
       'report_logs' => true,
       'maximum_number_of_collected_logs' => 200,
+      'censor_request_body_fields' => 
+      array (
+        0 => 'password',
+      ),
     ),
     'send_logs_as_events' => true,
+    'censor_request_body_fields' => 
+    array (
+      0 => 'password',
+    ),
   ),
   'ignition' => 
   array (
@@ -817,6 +825,8 @@
         'use_bom' => false,
         'include_separator_line' => false,
         'excel_compatibility' => false,
+        'output_encoding' => '',
+        'test_auto_detect' => true,
       ),
       'properties' => 
       array (
@@ -841,7 +851,7 @@
       ),
       'csv' => 
       array (
-        'delimiter' => ',',
+        'delimiter' => NULL,
         'enclosure' => '"',
         'escape_character' => '\\',
         'contiguous' => false,
@@ -858,6 +868,12 @@
         'category' => '',
         'manager' => '',
         'company' => '',
+      ),
+      'cells' => 
+      array (
+        'middleware' => 
+        array (
+        ),
       ),
     ),
     'extension_detector' => 
@@ -894,14 +910,22 @@
       array (
         'store' => NULL,
       ),
+      'default_ttl' => 10800,
     ),
     'transactions' => 
     array (
       'handler' => 'db',
+      'db' => 
+      array (
+        'connection' => NULL,
+      ),
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\xampp\\htdocs\\aloja-colombia\\storage\\framework/laravel-excel',
+      'local_path' => 'C:\\xampp\\htdocs\\aloja-colombia\\storage\\framework/cache/laravel-excel',
+      'local_permissions' => 
+      array (
+      ),
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,
@@ -910,7 +934,7 @@
   'trustedproxy' => 
   array (
     'proxies' => NULL,
-    'headers' => 94,
+    'headers' => 30,
   ),
   'tinker' => 
   array (

@@ -335,14 +335,11 @@ class WhatsAppController extends Controller
         sendMessage($mensajeHuesped);
         sendMessage($mensajeAlojador);
     }
-
-    /*
-    * RECEPCION DE MENSAJES
-    */
     
     static function sendMessage($mensaje){
-        $token = 'EAAVkJCDR1BUBO9SJkYtyZA0853BzVGHb0OEBPzqF1Nuoj3tA9uQNgHQOpURehYS8cZCNq6lbZAawwHF89pILNClZCZBzQ3HZBWY5i0LS1KEaud2BdbCV6qwLj9ADvLrpIUZChbB0NFud6E4MzHemF3w8cnm7pIrtZA8igo01ZCwcxsZBQoAACDZBQ2yWKOetZCc79x1D';
-        $url = 'https://graph.facebook.com/v18.0/252614411271335/messages';
+        //El token de abajo es permanente
+        $token = 'EAAVkJCDR1BUBOwERIVLzQ3wO2cXmaUAxiWfyi7yk8bwcPI9E11Jziky2YeYNVEu7BO0IuXiPCxZB9P8ZBKyauiNsm3IjRF6jZBWeAR8rNG84XYZBzHyWTxkb9yiu1PvJnuqpIS2G2pgaHOtv90GIpzVbyl6X4GoNUdg1W7KlCEiyUnRkGVTSsyc8fmYFht43A9OZCGPSFxLNqAgJW';
+        $url = 'https://graph.facebook.com/v18.0/280258178511546/messages';
         //DECLARAMOS LAS CABECERAS
         $header = array("Authorization: Bearer " . $token, "Content-Type: application/json",);
         //INICIAMOS EL CURL
@@ -360,6 +357,11 @@ class WhatsAppController extends Controller
         //CERRAMOS EL CURL
         curl_close($curl);
     }
+
+    /*
+    * RECEPCION DE MENSAJES
+    */
+    
 
     public function recibe(){
         // LEEMOS LOS DATOS ENVIADOS POR WHATSAPP
