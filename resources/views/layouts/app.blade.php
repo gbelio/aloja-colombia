@@ -21,10 +21,10 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:ital,wght@0,200;0,400;1,200;1,400" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('css/app-ric.css?1_1') }}" rel="stylesheet">
-    <link href="{{ asset('css/slideshow.css?1_1') }}" rel="stylesheet">
-    <link href="{{ asset('css/styles-ric.css?1_1') }}" rel="stylesheet">
-    <link href="{{ asset('css/statistics.css?1_1') }}" rel="stylesheet">
+    <link href="{{ asset('css/app-ric.css?1_3') }}" rel="stylesheet">
+    <link href="{{ asset('css/slideshow.css?1_3') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles-ric.css?1_3') }}" rel="stylesheet">
+    <link href="{{ asset('css/statistics.css?1_3') }}" rel="stylesheet">
     {{-- <link href="{{ asset('css/styles.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">

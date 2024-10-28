@@ -50,7 +50,7 @@
 
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <select name="country_code" class="form-control">
+                                <select name="country_code" class="form-control login-aloja-select" style="border-radius: 15px !important; border-color: grey !important; color: black !important;">
                                     <option value="+93">+93 (Afghanistan)</option>
                                     <option value="+355">+355 (Albania)</option>
                                     <option value="+21">+21 (Algeria)</option>
