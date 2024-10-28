@@ -292,7 +292,7 @@
                         <a class="pie-red" href="https://www.instagram.com/aloja.colombia/" target="_blank"><img
                                 src="{{ url('/img/instagram.svg') }}"></a>
                         <a class="pie-red"
-                            href="https://api.whatsapp.com/send?phone=+573106989161&text=Bienvenidos%20a%20Aloja%20Colombia,%20env%C3%ADanos%20tu%20consulta%20y%20en%20breve%20nos%20contactaremos%20contigo."
+                            href="https://api.whatsapp.com/send?phone=+573115143030&text=Bienvenidos%20a%20Aloja%20Colombia,%20env%C3%ADanos%20tu%20consulta%20y%20en%20breve%20nos%20contactaremos%20contigo."
                             target="_blank"><img src="{{ url('/img/whatsapp.svg') }}"></a>
                     </div>
                 </div>
@@ -327,7 +327,7 @@
             <div><a style="float: left;" class="pie-red" href="https://www.instagram.com/aloja.colombia/"
                     target="_blank"><img src="{{ url('/img/instagram.svg') }}"></a></div>
             <div><a class="pie-red"
-                    href="https://api.whatsapp.com/send?phone=+573106989161&text=Bienvenidos%20a%20Aloja%20Colombia,%20env%C3%ADanos%20tu%20consulta%20y%20en%20breve%20nos%20contactaremos%20contigo."
+                    href="https://api.whatsapp.com/send?phone=+573115143030&text=Bienvenidos%20a%20Aloja%20Colombia,%20env%C3%ADanos%20tu%20consulta%20y%20en%20breve%20nos%20contactaremos%20contigo."
                     target="_blank"><img src="{{ url('/img/whatsapp.svg') }}"></a></div>
         </div>
         <div class="col-6">
@@ -346,6 +346,19 @@
 </div>
 </body>
 @stack('footer')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const select = document.querySelector('select[name="country_code"]');
+        const input = document.getElementById('celular');
+        console.log(select);
+        
+        // Función que se ejecuta al cambiar el select
+        select.addEventListener('change', function () {
+            const selectedValue = select.value; // Obtiene el valor del select
+            input.value = selectedValue; // Asigna el valor al input
+        });
+    });
+</script>
 <script src="{{ asset('plugins/select2/js/select2.min.js') }}" defer></script>
 <script src="{{ asset('plugins/select2/js/i18n/es.js') }}" defer></script>
 <script type="text/javascript">

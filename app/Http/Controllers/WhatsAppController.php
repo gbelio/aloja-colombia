@@ -351,7 +351,7 @@ class WhatsAppController extends Controller
         //OBTENEMOS LA RESPUESTA DEL ENVIO DE INFORMACION
         $response = json_decode(curl_exec($curl), true);
         //IMPRIMIMOS LA RESPUESTA 
-        print_r($response);
+        /* print_r($response); */
         //OBTENEMOS EL CODIGO DE LA RESPUESTA
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         //CERRAMOS EL CURL

@@ -4454,7 +4454,7 @@ body {
 
 
 
-.login-aloja input[type=email], .login-aloja input[type=password], .login-aloja input[type=text], .login-aloja input[type=tel], .login-aloja textarea {
+.login-aloja input[type=email], .login-aloja input[type=password], .login-aloja input[type=text], .login-aloja input[type=tel], .login-aloja textarea, .login-aloja select {
 
 	border-color: grey;
 

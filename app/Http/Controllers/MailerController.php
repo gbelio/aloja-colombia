@@ -1674,6 +1674,7 @@ class MailerController extends Controller
         );
         $message->send(new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo));
     }
+
     //MAIL A INQUILINO - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 48HS (SO)
     static function renterMailAutoCancelSO($alojamientoPedido){
         $asunto = $asunto = 'Reserva no aprobada – '
@@ -1698,6 +1699,7 @@ class MailerController extends Controller
         $message = Mail::to($alojamientoPedido->Huesped->email);
         $message->send(new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo));
     }
+
     //MAIL A ADMIN - CANCELADO AUTOMÁTICO POR FALTA DE CONFIRMACIÓN 48HS (SO)
     static function adminMailAutoCancelSO($alojamientoPedido){
         $asunto = 'Reserva no aprobada – '
@@ -1781,7 +1783,7 @@ class MailerController extends Controller
             ' del ' . MailerController::dateFormater($alojamientoPedido->fecha_desde) . ' al '
             . MailerController::dateFormater($alojamientoPedido->fecha_hasta);
         $titulo = 'Reserva Cancelada';
-        $cuerpo = '<p>Hola ' . $alojamientoPedido->Alojamiento->Propietario->nombreCompleto() .',</p>
+        $cuerpo = '<p>Hola ' . $alojamientoPedido->Huesped->name .',</p>
         <p>Desafortunadamente tu reserva fue cancelada porque no la pagaste
             dentro de los plazos establecidos.
         </p>
@@ -1926,7 +1928,7 @@ class MailerController extends Controller
             ' del ' . MailerController::dateFormater($alojamientoPedido->fecha_desde) .
             ' al ' . MailerController::dateFormater($alojamientoPedido->fecha_hasta);
         $titulo = 'Reserva Cancelada';
-        $cuerpo = '<p>Hola ' . $alojamientoPedido->Alojamiento->Propietario->nombreCompleto() .',</p>
+        $cuerpo = '<p>Hola ' . $alojamientoPedido->Huesped->name .',</p>
             <p>Desafortunadamente cancelaste tu reserva</p>
             <p>Código de reserva: ' . $alojamientoPedido->codigo_reserva . '</p>
             <div style="text-align-last: center;">
@@ -1959,6 +1961,7 @@ class MailerController extends Controller
         $message = Mail::to($alojamientoPedido->Huesped->email);
         $message->send(new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo));
     }
+
     //MAIL A ADMIN - CANCELADO MANUAL HUESPED
     static function adminMailManualCancel($alojamientoPedido){
         $asunto = 'Reserva Cancelada Por el Huesped – ' .
@@ -2051,6 +2054,7 @@ class MailerController extends Controller
                 new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo)
             );
     }
+
     //MAIL A INQUILINO - RESERVA ACEPTADA
     static function renterMailAccepted($alojamientoPedido){
         $mensaje = '<p>Hemos enviado la aprobación de la solicitud de reserva.</p>
@@ -2101,7 +2105,8 @@ class MailerController extends Controller
                 new \App\Mail\MailGenerico($asunto, $titulo, $cuerpo)
             );
     }
-        //MAIL A ADMIN - RESERVA ACEPTADA
+
+    //MAIL A ADMIN - RESERVA ACEPTADA
     static function adminMailAccepted($alojamientoPedido){
         $mensaje = '<p>Hemos enviado la aprobación de la solicitud de reserva.</p>
             <br>
@@ -2290,6 +2295,7 @@ class MailerController extends Controller
         } // Fin completo 2
         return $liquidacion;
     }
+
     //MUESTRA EN MAIL EL VALOR DEL DEPÓSITO
     static function valorDeposito($alojamientoPedido){
         if(isset($alojamientoPedido->valor_deposito) || $alojamientoPedido->valor_deposito>0){
@@ -2302,6 +2308,7 @@ class MailerController extends Controller
             return $valorDeposito;
         }
     }
+
     //MUESTRA EN MAIL POLÍTICA DE CANCELACION CORRESPONDIENTE AL ALOJAMIENTO
     static function politicaCancelacion($alojamientoPedido){
         switch ($alojamientoPedido->Alojamiento->politica_cancelacion) {
@@ -2323,6 +2330,7 @@ class MailerController extends Controller
                 break;
         }
     }
+    
     //SI SE REALIZÓ EL PAGO EN DOS VECES MUESTRA LA DIVISIÓN DEL PAGO Y LOS NÚMEROS DE TRANSACCIÓN
     static function secondPay($alojamientoPedido){
         if($alojamientoPedido->numero_transaccion2 != null){
